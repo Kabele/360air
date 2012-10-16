@@ -1,5 +1,5 @@
 <?php
-class Account_model extends Model
+class Account_model extends CI_Model
 {
 	function __construct() {
 		parent::__construct();
@@ -56,8 +56,20 @@ class Account_model extends Model
             return;
 		} else {
             $this->session->set_flashdata('error_message', 'You must be logged in to perform this action!');
-            redirect(base_url().'accounts/login', 'location');
+            redirect(base_url().'accounts/showLogin', 'location');
 		}
     }
+	
+	function addAccount() {
+		// Generate salt for password
+		$this->load->helper('string');
+		$salt = random_string('alnum', 16);
+		$account = array(
+			'email'              => $this->input->post('reg_email'),
+			'password'              => md5(md5($this->input->post('reg_password')) . $salt),
+			'salt'              	=> $salt,
+			'address_id'            => 0,
+		);
+	}
 }
 ?>
