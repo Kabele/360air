@@ -22,7 +22,7 @@ class Flights extends CI_Controller
 		if($flight == NULL)
 			echo 'Flight not found';
 		else
-			print_class_vars($flight);
+			$flight->print_data();
 	}
 }
 

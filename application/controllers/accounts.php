@@ -49,10 +49,15 @@ class Accounts extends CI_Controller
 				redirect('accounts/showLogin', 'location');
 			} else {
 				// Add account to the database
-				$regSuccessful = $this->Account_model->addAccount($email, $password);
+				$data = array(
+					'email' => $this->input->post('reg_email'),
+					'password' => $this->input->post('reg_password')
+					);
+				$regSuccess = $this->Account_model->addAccount($data);
+				$loginSuccess = $this->Account_model->doAccountLogin($data['email'],  $data['password']);
 				
 				// Log the account in and redirect to the management page
-				if($regSuccessful && $this->Account_model->doAccountLogin($this->input->post('reg_email'),  $this->input->post('reg_password'))) {
+				if($regSuccess && $loginSuccess) {
 					$this->session->set_flashdata('status_message', 'Welcome to 360-air.com!');
 					redirect('accounts/manage', 'location');
 				} else {

@@ -22,11 +22,13 @@ class Flight_model extends CI_Model {
 			$dq = $this->db->get_where('airports', array('airport_pk' => $flight->depart_airport_id), 1, 0);
 			if($dq->num_rows() == 1)
 				$flight->depart_airport_code = $dq->row()->code;
+			$dq->free_result();
 			
 			// Lookup the arrival airport code
 			$aq = $this->db->get_where('airports', array('airport_pk' => $flight->arrival_airport_id), 1, 0);
 			if($aq->num_rows() == 1)
 				$flight->arrival_airport_code = $aq->row()->code;
+			$aq->free_result();
 			
 			return $flight;
 		} else {
@@ -34,6 +36,20 @@ class Flight_model extends CI_Model {
 		}
 	}
 	
+	/*
+	 * Add a flight to the database
+	 *
+	 * @param $flt Flight object
+	 * @return TRUE if successful, false if otherwise
+	 */
+	function addFlight(Flight $flt) {
+		$this->db->insert('flights', get_object_vars($flt));
+		
+		if($this->db->affected_rows() == 1)
+			return TRUE;
+			
+		return FALSE;
+	}
 	
 	function search() {
 	}

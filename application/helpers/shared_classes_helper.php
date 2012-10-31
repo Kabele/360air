@@ -35,6 +35,10 @@ class Flight {
 		$this->depart_airport_code = "?";
 		$this->arrival_airport_code = "?";
 	}
+	
+	function print_data() {
+		print_class_vars($this);
+	}
 }
 
 ?>
