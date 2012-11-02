@@ -1,6 +1,4 @@
-<body bgcolor="#8F8B8B" text="#000" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" topmargin="4">
-<center>
-<br></br><br></br>
+<div id="ats" class="majorHeading">test</div>
 <table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
 <tbody>
 
@@ -217,4 +215,4 @@
 
 <tr><td>&nbsp;</td></tr>
 
-</table></center>
+</table>

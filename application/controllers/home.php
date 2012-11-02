@@ -14,9 +14,9 @@ class Home extends CI_Controller
 
 	public function index() {
 		// Get all data that will be displayed on the from page
-		//$data['new_flights'] = $this->Flight_model->getNewFlights();
-		$data = NULL; // temporary
-
+		//$data['recent_flights'] = $this->Flight_model->getRecentFlights();
+		$data = NULL;
+		
 		// Load template components (all are optional)
 		$page_data['css'] = $this->load->view('home/style.css', NULL, true);
 		$page_data['js'] = $this->load->view('home/js', NULL, true);
@@ -26,6 +26,7 @@ class Home extends CI_Controller
 		// Send page data to the site_main and have it rendered
 		$this->load->view('site_main', $page_data);
 	}
+
 }
 
 ?>
