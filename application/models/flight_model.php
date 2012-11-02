@@ -51,7 +51,86 @@ class Flight_model extends CI_Model {
 		return FALSE;
 	}
 	
-	function search() {
+	/*
+	 * Returns a list of at most 5 recent flights taken for a given user
+	 * 
+	 * @param $id to match the Account id of the user
+	 * @return List of flights of max size 5
+	 */
+	function getRecentFlights($id) {
+		// Get the flights with the corresponding account id
+		$orders = $this->db->get_where('orders', array('account_id' => $id))->order_by('time', 'desc')->limit(5);
+		
+		$recentFlights = array();
+		foreach($orders as $o) {
+			$recentFlights[] = getFlight($o->flight_id);
+		}
+		
+		
+		return $recentFlights;
+	}
+	
+	/*
+	 * Returns a list of the 5 most recently added flights to the flights table
+	 * 
+	 * @return List of flights of max size 5
+	 */
+	function getNewlyAddedFlights() {
+		$flights = $this->db->order_by('flight_pk', 'desc')->limit(5)->get('flights');
+		return $flights->result();
+	}
+	/*
+	 * Returns a list of flights filtered by the parameters
+	 * 
+	 * @param 
+	 */
+	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $availableSeats) {
+		// Add filter parameters depending on what was passed
+		//$this->db->from('flights');
+		// Filter by depart airport
+		if($departAirport != NULL) {
+			// Look up the airport id using the code provided			
+			$this->db->join('airports as d_airport', 'flights.depart_airport_id = d_airport.airport_pk');
+			$this->db->where('d_airport.code',$departAirport);
+			//$this->db->select('d_airport.code as d_code, d_airport.name as d_name, flights.*');
+		}
+		if($arrivalAirport != NULL) {
+			// Look up the airport id using the code provided			
+			$this->db->join('airports as a_airport', 'flights.arrival_airport_id = a_airport.airport_pk');
+			$this->db->where('a_airport.code',$arrivalAirport);
+			//$this->db->select('a_airport.code as a_code, a_airport.name as a_name, flights.*');
+		}
+		if($departTimeStart != NULL) {
+			$this->db->where('flights.depart_time >=', $departTimeStart);
+		}
+		if($departTimeEnd != NULL) {
+			$this->db->where('flights.depart_time <=', $departTimeEnd);
+		}
+		if($arriveTimeStart != NULL) {
+			$this->db->where('flights.arrival_time >=', $arriveTimeStart);
+		}
+		if($arriveTimeEnd != NULL) {
+			$this->db->where('flights.arrival_time <=', $arriveTimeEnd);
+		}
+		if($classType != NULL) {
+			$this->db->where('flights.class_type',$classType);
+		}
+		if($availableSeats != NULL) {
+			$this->db->where('flights.available_seats >=', $availableSeats);
+		}
+		
+		// Populate with the airport code and name for depart and arrival
+		$this->db->join('airports as depart_airport', 'flights.depart_airport_id = depart_airport.airport_pk');
+		$this->db->select('depart_airport.code as d_code, depart_airport.name as d_name');
+		
+		$this->db->join('airports as arrive_airport', 'flights.arrival_airport_id = arrive_airport.airport_pk');
+		$this->db->select('arrive_airport.code as a_code, arrive_airport.name as a_name');
+		
+		$this->db->select('flights.*');
+		
+		$flights = $this->db->get('flights');
+		
+		return $flights->result();
 	}
 }
 

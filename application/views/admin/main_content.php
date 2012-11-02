@@ -1,17 +1,22 @@
-<div id="ats" class="majorHeading">test</div>
-<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table>
 <tbody>
 
+
+
 <tr>
-<td width="100%" colSpan="4" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
+<td>Flight ID:</td>
+<td><input type="text" size="20" name="flight_id" id="flight_id" value=""></td>
 </tr>
+
+<tr><td>&nbsp</td></tr>
+<tr><td>&nbsp</td></tr>
 
 <tr>
 <td>&nbsp;<b>From:</b></td>
 <td>&nbsp;<b>To:</b></td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
+<td>&nbsp;<b>Price</b></td>
 </tr>
 
 <tr>
@@ -33,13 +38,17 @@
 <option value="2">Business</option>
 </select></center>
 </td>
+<td>
+$&nbsp<input type="text" size="8" name=price" id="price" value="">
+</td>
 </tr>
+
 
 <tr><td>&nbsp;</td></tr>
 
 </table>
 
-<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table>
 <tbody>
 <tr>
 <td>&nbsp;<b>Departure:</b></td>
@@ -53,7 +62,7 @@
 <input type="text" size="20" name="depart_date" id="depart_date" value="">
 </td>
 <td>
-	<ul id="icons" class="ui-widget ui-helper-clearfix"><span class="ui-icon ui-icon-calendar"></span></ul>
+	<ul id="icons" class="ui-widget ui-helper-clearfix"><li class="ui-state-default ui-corner-all" title=".ui-icon-calendar"><span class="ui-icon ui-icon-calendar"></span></li></ul>
 </td>
 <td>
 <select id="depart_time" name="depart_time">
@@ -93,7 +102,7 @@
 <input type="text" size="20" name="arrival_date" id="arrival_date" value="">
 </td>
 <td>
-	<ul id="icons" class="ui-widget ui-helper-clearfix"><span class="ui-icon ui-icon-calendar"></span></ul>
+	<ul id="icons" class="ui-widget ui-helper-clearfix"><li class="ui-state-default ui-corner-all" title=".ui-icon-calendar"><span class="ui-icon ui-icon-calendar"></span></li></ul>
 </td>
 <td>
 <select id="depart_time" name="arrival_time">
@@ -135,43 +144,17 @@
 				
 </table>
 
-<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table>
 <tbody>
+
+
 <tr>
-<td width="100%" colSpan="9" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+<form>
+<td><input type="radio" name="flight_type" value="add_flight">Add flight</td>
+<td><input type="radio" name="flight_type" value="delete_flight">Delete flight</td>
+<td><input type="radio" name="flight_type" value="update_flight">Update flight</td>
+</form> 
 </tr>
-<tr>
-<td>Adults (12+)</td>
-<td>
-<select id="passenger_number" name="passenger_adult">
-                        <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                </select>
-				</td>
-<td>Children (2-11)</td>
-<td>
-<select id="passenger_number" name="passenger_adult">
-                        <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                </select>
-				</td>	
-<td>Infants (under 2)</td>
-<td>
-<select id="passenger_number" name="passenger_adult">
-                        <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                </select>
-				</td>
-				</tr>		
 				
 				
 				<tr><td>&nbsp;</td></tr>
@@ -182,37 +165,7 @@
 				<tr>
 <td width="10%" style="margin: 0" height="100%" colspan="6">
 <center>
-<input style="border:3px outset #FFF; FONT-SIZE: 18pt;  COLOR: #000; BACKGROUND-COLOR: #8F8B8B" type="submit" value="Search" name="sbutton"></p>
+<input style="border:3px outset #FFF; FONT-SIZE: 18pt;  COLOR: #000; BACKGROUND-COLOR: #8F8B8B" type="submit" value="Submit" name="sbutton"></p>
 </center></td>
 </tr>
-</table>
-				
-				<br></br>
-				
-<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
-<tbody>
-
-<tr>
-<td width="100%" colSpan="6" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
-</tr>		
-
-
-<tr>
-<td>&nbsp;</td>
-<td><center><u><b>New Flight:</b></u></center></td>
-</tr>
-
-<tr><td>&nbsp;</td></tr>
-
-<tr>
-<td><u><center>Date:</center></u></td>
-<td><u><center>From:</center></u></td>
-<td><u><center>To:</center></u></td>
-<td><u><center>Price:</center></u></td>
-<td>&nbsp;</td>
-</tr>
-
-<tr><td>&nbsp;</td></tr>
-
 </table>
