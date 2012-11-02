@@ -48,6 +48,25 @@ class Test extends CI_Controller
 			var_dump($flights);
 		}
 	}
+	
+	public function addFlight() {
+		if($this->input->post()) {
+			echo 'Testing Flight_model/addFlight<br>';
+			$flt = new Flight();
+			
+			$flt->depart_airport_id = $this->input->post('departAirportId');
+			$flt->arrival_airport_id = $this->input->post('arrivalAirportId');
+			$flt->depart_time = $this->input->post('departTime');
+			$flt->arrival_time = $this->input->post('arriveTime');
+			$flt->class_type = $this->input->post('classType');		
+			$flt->ticket_price = $this->input->post('ticketPrice');
+			$flt->total_seats = $this->input->post('total_seats');
+			$flt->available_seats = $flt->total_seats;
+			
+			$result = $this->Flight_model->addFlight($flt);
+			echo $result;
+		}
+	}
 }
 
 ?>

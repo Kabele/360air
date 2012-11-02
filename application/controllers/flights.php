@@ -13,12 +13,12 @@ class Flights extends CI_Controller
 	}
 
 	public function index() {
-
+		echo 'flights index';
 	}
 	
 	public function search() {
 	//Load template components (all are optional)
-		$page_data['css'] = $this->load->view("flights/search_style.css", NULL, true);
+	$page_data['css'] = $this->load->view("flights/search_style.css", NULL, true);
 	$page_data['js'] = $this->load->view("flights/search_js", NULL, true);
 	$page_data['content'] = $this->load->view("flights/search_content", NULL, true);
 	$page_data['widgets'] = $this->load->view("flights/search_widgets", NULL, true);

@@ -17,10 +17,13 @@ class Flight {
 	public $depart_time;
 	public $arrival_time;
 	public $ticket_price;
+	public $class_type;
 	
 	// Application properties
 	public $depart_airport_code;
 	public $arrival_airport_code;
+	public $depart_airport_name;
+	public $arrival_airport_name;
 	
 	function __construct() {
 		$this->flight_pk = 0;
@@ -31,9 +34,12 @@ class Flight {
 		$this->depart_time = 0;
 		$this->arrival_time = 0;
 		$this->ticket_price = 0;
+		$this->class_type = 0;
 		
 		$this->depart_airport_code = "?";
 		$this->arrival_airport_code = "?";
+		$this->depart_airport_name = "?";
+		$this->arrival_airport_name = "?";
 	}
 	
 	function print_data() {
