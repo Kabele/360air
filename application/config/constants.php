@@ -36,6 +36,18 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+/*
+|--------------------------------------------------------------------------
+| Constants for 360Air
+|--------------------------------------------------------------------------
+|
+| These should be used for information that is constant
+|
+*/
+
+define('FLIGHT_TYPE_BUSINESS',					1);
+define('FLIGHT_TYPE_COACH',						2);
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
