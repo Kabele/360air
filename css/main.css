@@ -1,6 +1,7 @@
 html,body{
 margin:0;
 padding:0;
+background: #FFF;
 }
 
 body{
@@ -13,9 +14,7 @@ margin:0 10px 10px;
 }
 
 a{
-display:block;
-color: #981793;
-padding:10px;
+	color: #981793;
 }
 
 div#header h1{
@@ -24,6 +23,10 @@ line-height:80px;
 margin:0;
 padding-left:10px;
 background: #EEE;
+}
+
+div#navlinks a {
+	padding: 0 5px 0 5px;
 }
 
 div#container{
@@ -54,7 +57,6 @@ margin:0 auto;
 
 div#content{
 float:left;
-width:72%;
 }
 
 div#rightpane{
