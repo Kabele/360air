@@ -1,29 +1,16 @@
-<table width="900" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table>
 <tbody>
-<tr>
-<td width="100%" colspan="1" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
+
+<tr align="center">
+	<td colspan="7">&nbsp;&nbsp;<h2><u>Order History:</u></h2></td>
 </tr>
 
-
-<tr>
-	<td>&nbsp;&nbsp;<b><u>Order History:</u></b></td>
-</tr>
-
-</table>
-
-<table width="900" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
-<tbody>
-<tr>
-<td width="100%" colspan="7" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
-</tr>
 
 <tr>
   <td>&nbsp;&nbsp;<b>From:</b></td>
-  <td><h2>(from)</h2></td>
+  <td><h3>(from)</h3></td>
 <td>&nbsp;&nbsp;<b>To:</b></td>
-<td><h2>(to)</h2></td>
+<td><h3>(to)</h3></td>
 <td>&nbsp;<b>(Flight number)</b></td>
 <td><b>$&nbsp;(cost)</b></td>
 <td>&nbsp;</td>

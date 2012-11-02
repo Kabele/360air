@@ -1,43 +1,37 @@
 <h1><font color="red">Airline Ticket</font></h1>
 
-<table width="700" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
-<tbody>
-<tr>
-<td width="100%" colSpan="3" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
-</tr>
+<table>
 
 
 <tr>
-  <td>&nbsp;&nbsp;From:</td>
-  <td>&nbsp;&nbsp;</td>
-  <td>&nbsp;&nbsp;To:</td>
+  <td>From:</td>
+  <td>&nbsp;</td>
+  <td>To:</td>
 </tr>
 
 <tr>
-  <td>&nbsp;&nbsp;Ticket Number:</td>
-  <td>&nbsp;&nbsp;</td>
-  <td>&nbsp;&nbsp;Booked By:</td>
+  <td>Ticket Number:</td>
+  <td>&nbsp;</td>
+  <td>Booked By:</td>
 </tr>
 
 <tr>
-  <td>&nbsp;&nbsp;Class:</td>
-  <td>&nbsp;&nbsp;</td>
-  <td>&nbsp;&nbsp;Traveling Date:</td>
+  <td>Class:</td>
+  <td>&nbsp;</td>
+  <td>Traveling Date:</td>
 </tr>
 
 <tr>
-  <td>&nbsp;&nbsp;Total Price:</td>
+  <td>Total Price:</td>
   <td>$</td>
-  <td>&nbsp;&nbsp;Departure Time:</td>
+  <td>Departure Time:</td>
 </tr>
 
 <tr><td>&nbsp;</td></tr>
 <tr>
-  <td>&nbsp;&nbsp;Adult:</td>
-  <td>&nbsp;&nbsp;Child:</td>
-  <td>&nbsp;&nbsp;Infant:</td>
+  <td>Adult:</td>
+  <td>Child:</td>
+  <td>Infant:</td>
 
 </tr>
-</tbody>
 </table>

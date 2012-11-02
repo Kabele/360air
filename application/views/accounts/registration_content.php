@@ -1,10 +1,5 @@
 <br></br>
-<table width="800" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
-<tbody>
-<tr>
-<td width="100%" colSpan="2" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
-</tr>
+<table>
 
 
 <tr>
@@ -49,24 +44,14 @@
 
 <tr>
   <td>&nbsp;&nbsp;<b>Address:</b></td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
+
 </tr>
 
 
 <tr>
-  <td colspan="4">&nbsp;&nbsp;<input type="text" size="100" name="address" id="address" value="Street"></td>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
+  <td colspan="3">&nbsp;&nbsp;<input type="text" size="100" name="address" id="address" value="Street"></td>
 </tr>
-</table>
 
-<table width="800" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
-<tbody>
-<tr>
-<td width="100%" colSpan="3" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
-</td>
-</tr>
 
 <tr>
   <td>&nbsp;&nbsp;<input type="text" size="20" name="city" id="city" value="City"></td>
