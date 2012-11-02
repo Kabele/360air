@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Air360</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../css/main.css">
+<link rel="stylesheet" type="text/css" href="../css/jquery-ui-1.9.0.custom.css">
+<script src="../js/jquery-1.8.2.js"></script>
+<script src="../js/jquery-ui-1.9.0.custom.js"></script>
+<script>
+$(function() {
+	
+	$( "#accordion" ).accordion();
+	
+
+	
+	var availableTags = [
+		"ActionScript",
+		"AppleScript",
+		"Asp",
+		"BASIC",
+		"C",
+		"C++",
+		"Clojure",
+		"COBOL",
+		"ColdFusion",
+		"Erlang",
+		"Fortran",
+		"Groovy",
+		"Haskell",
+		"Java",
+		"JavaScript",
+		"Lisp",
+		"Perl",
+		"PHP",
+		"Python",
+		"Ruby",
+		"Scala",
+		"Scheme"
+	];
+	$( "#autocomplete" ).autocomplete({
+		source: availableTags
+	});
+	
+
+	
+	$( "#button" ).button();
+	$( "#radioset" ).buttonset();
+	
+
+	
+	$( "#tabs" ).tabs();
+	
+
+	
+	$( "#dialog" ).dialog({
+		autoOpen: false,
+		width: 400,
+		buttons: [
+			{
+				text: "Ok",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			{
+				text: "Cancel",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		]
+	});
+
+	// Link to open the dialog
+	$( "#dialog-link" ).click(function( event ) {
+		$( "#dialog" ).dialog( "open" );
+		event.preventDefault();
+	});
+	
+
+	
+	$( "#datepicker" ).datepicker({
+		inline: true
+	});
+	
+
+	
+	$( "#slider" ).slider({
+		range: true,
+		values: [ 17, 67 ]
+	});
+	
+
+	
+	$( "#progressbar" ).progressbar({
+		value: 20
+	});
+	
+
+	// Hover states on the static widgets
+	$( "#dialog-link, #icons li" ).hover(
+		function() {
+			$( this ).addClass( "ui-state-hover" );
+		},
+		function() {
+			$( this ).removeClass( "ui-state-hover" );
+		}
+	);
+});
+</script>
+<style>
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+</style>
+
+
+</head>
+<body>
+<div id="container">
+
+<font color="red" size="6"><b>AIR360</b></font><img src="airplane_new.jpeg"></img>
+  
+<div align="right">
+<table>
+<tr>
+<td><a href="Main Page.html">Home</a>&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+<td><a href="Flights.html">Flights</a>&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+<td><a href="News.html">News</a>&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+<td><a href="Account.html">Account</a>&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+<td><a href="Contact.html">Contact</a>&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+</table>
+</div>
+
+<div id="wrapper">
+<div id="content">
+
+<body bgcolor="#8F8B8B" text="#000" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" topmargin="4">
+<center>
+<br></br><br></br>
+<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<tbody>
+
+<tr>
+<td width="100%" colSpan="2" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+</td>
+</tr>
+
+<tr>
+<td align="left">&nbsp&nbsp&nbsp<u><b>Flight Results:</b></u></td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<tbody>
+
+<tr>
+<td width="100%" colSpan="6" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+</td>
+</tr>
+
+<tr><td>&nbsp</td></tr>
+
+
+<tr align="left">
+<td>From:</td>
+<td>&nbsp</td>
+<td>&nbspon</td>
+<td>&nbsp</td>
+<td>&nbspat</td>
+<td>&nbsp</td>
+</tr>
+
+<tr align="left">
+<td>To:</td>
+<td>&nbsp</td>
+<td>&nbspon</td>
+<td>&nbsp</td>
+<td>&nbspat</td>
+<td>&nbsp</td>
+</tr>
+
+<tr><td>&nbsp</td></tr>
+
+
+<tr>
+<td>(Passenger number)</td>
+<td>(one way, round trip)</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<table width="900" outline="1" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<tbody>
+<hr>
+<tr>
+<td width="100%" colSpan="6" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+</td>
+</tr>
+
+<tr><td>&nbsp</td></tr>
+
+
+<tr align="left">
+<td>(From)</td>
+<td><ul id="icons" class="ui-widget ui-helper-clearfix"><li class="ui-state-default ui-corner-all" title=".ui-icon-arrow-1-e"><span class="ui-icon ui-icon-arrow-1-e"></span></li></td>
+<td>(to)</td>
+<td>(flight number)</td>
+<td>$ (cost)</td>
+<td>&nbsp</td>
+</tr>
+
+<tr align="left">
+<td>Departs:</td>
+<td>(date)</td>
+<td>(time)</td>
+<td>&nbsp</td>
+<td>&nbsp</td>
+<td>(one way, round trip)</td>
+</tr>
+
+<tr align="left">
+<td>Arrives:</td>
+<td>(date)</td>
+<td>(time)</td>
+</tr>
+
+<tr><td>&nbsp</td></tr>
+
+
+<tr>
+
+<td colspan="6"><center>
+<input style="border:3px outset #FFF; FONT-SIZE: 10pt;  COLOR: #000; BACKGROUND-COLOR: #8F8B8B" type="submit" value="Book Now!" name="sbutton">
+</center></td>
+
+
+<tr><td>&nbsp</td></tr>
+
+</tbody>
+</table>
+
+
+
+</div>
+</div>
+
+<div id="rightpane">
+<!-- Widgets to appear on the right side of the page goes here -->
+</div>
+
+<div id="footer"><p>(C) 2012, 360-air.com. Footer</p></div>
+
+</div> <!-- end container -->
+
+</body>
+</html>
