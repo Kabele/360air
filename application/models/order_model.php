@@ -35,13 +35,6 @@ class Order_model extends CI_Model {
 		$this->db->insert('orders', $od);
 		if($this->db->affected_rows() != 1)
 			return array('result' => FALSE, 'message' => 'Could not insert order into the database');
-			
-		// Insert an order modification
-		$om = array(
-			'time' => $tm,
-			'comment' => 'Created',
-			'account_id' => $account_id);
-		$this->db->insert('order_modifications', $om);
 		
 		// Decrement the number of seats on the flight by 1
 		$flight->available_seats--;
@@ -89,6 +82,7 @@ class Order_model extends CI_Model {
 		$om = array(
 			'time' => $tm,
 			'comment' => 'Canceled',
+			'order_id' => $order_id,
 			'account_id' => $account_id);
 		$this->db->insert('order_modifications', $om);
 		

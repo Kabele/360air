@@ -129,7 +129,6 @@ To: <input type="text" size="20" name="arrival_date_end_picker" id="arrival_date
 
 </table>
 
-
 <?php echo form_submit('submit', 'Search!');?>
 
 <?php echo form_close(); ?>
