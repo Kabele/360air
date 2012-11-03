@@ -165,7 +165,7 @@ class Flight_model extends CI_Model {
 	 */
 	function getAirports($isDomestic) {
 		$this->db->from('airports');
-		$this->db->select('airport_pk, code, name, city, country');
+		$this->db->select('airport_pk, code, name, city, country, is_domestic');
 		if($isDomestic) {
 			$this->db->where('is_domestic',1);
 		}
