@@ -36,14 +36,14 @@ class Flight_model extends CI_Model {
 		}
 	}
 	
-	/*
+	/**
 	 * Add a flight to the database
 	 *
 	 * @param $flt Flight object
-	 * @return TRUE if successful, false if otherwise
+	 * @return TRUE if successful, FALSE if otherwise
 	 */
 	function addFlight(Flight $flt) {
-		$this->db->insert('flights', get_object_vars($flt));
+		$this->db->insert('flights', $flt->get_db_vars());
 		
 		if($this->db->affected_rows() == 1)
 			return TRUE;
@@ -51,35 +51,60 @@ class Flight_model extends CI_Model {
 		return FALSE;
 	}
 	
-	/*
+	/**
+	 * Updates a flight with the pk in the Flight object with the rest of the information
+	 * 
+	 * @param $flt Flight object
+	 * @return TRUE if successful, FALSE otherwise
+	 */	
+	function updateFlight(Flight $flt) {
+		$this->db->where('flight_pk', $flt->flight_pk);
+		$this->db->update('flights', $flt->get_db_vars());
+		
+		if($this->db->affected_rows() == 1) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+	
+	/**
 	 * Returns a list of at most 5 recent flights taken for a given user
 	 * 
-	 * @param $id to match the Account id of the user
+	 * @param $accountId to match the Account id of the user
 	 * @return List of flights of max size 5
 	 */
-	function getRecentFlights($id) {
+	function getRecentFlights($accountId) {
 		// Get the flights with the corresponding account id
-		$orders = $this->db->get_where('orders', array('account_id' => $id))->order_by('time', 'desc')->limit(5);
+		$orders = $this->db->get_where('orders', array('account_id' => $accountId))->order_by('time', 'desc')->limit(5);
 		
 		$recentFlights = array();
 		foreach($orders as $o) {
 			$recentFlights[] = getFlight($o->flight_id);
-		}
-		
+		}		
 		
 		return $recentFlights;
 	}
 	
-	/*
+	/**
 	 * Returns a list of the 5 most recently added flights to the flights table
 	 * 
 	 * @return List of flights of max size 5
 	 */
 	function getNewlyAddedFlights() {
+		// Populate with the airport code and name for depart and arrival
+		$this->db->join('airports as depart_airport', 'flights.depart_airport_id = depart_airport.airport_pk');
+		$this->db->select('depart_airport.code as depart_airport_code, depart_airport.name as depart_airport_name, depart_airport.city as depart_airport_city, depart_airport.country as depart_airport_country');
+		
+		$this->db->join('airports as arrival_airport', 'flights.arrival_airport_id = arrival_airport.airport_pk');
+		$this->db->select('arrival_airport.code as arrival_airport_code, arrival_airport.name as arrival_airport_name, arrival_airport.city as arrival_airport_city, arrival_airport.country as arrival_airport_country');
+		
+		$this->db->select('flights.*');
+		
 		$flights = $this->db->order_by('flight_pk', 'desc')->limit(5)->get('flights');
 		return $flights->result();
 	}
-	/*
+	
+	/**
 	 * Returns a list of flights filtered by the parameters
 	 * 
 	 * @param 
@@ -120,10 +145,10 @@ class Flight_model extends CI_Model {
 		
 		// Populate with the airport code and name for depart and arrival
 		$this->db->join('airports as depart_airport', 'flights.depart_airport_id = depart_airport.airport_pk');
-		$this->db->select('depart_airport.code as depart_airport_code, depart_airport.name as depart_airport_name');
+		$this->db->select('depart_airport.code as depart_airport_code, depart_airport.name as depart_airport_name, depart_airport.city as depart_airport_city, depart_airport.country as depart_airport_country');
 		
-		$this->db->join('airports as arrive_airport', 'flights.arrival_airport_id = arrive_airport.airport_pk');
-		$this->db->select('arrive_airport.code as arrival_airport_code, arrive_airport.name as arrival_airport_name');
+		$this->db->join('airports as arrival_airport', 'flights.arrival_airport_id = arrival_airport.airport_pk');
+		$this->db->select('arrival_airport.code as arrival_airport_code, arrival_airport.name as arrival_airport_name, arrival_airport.city as arrival_airport_city, arrival_airport.country as arrival_airport_country');
 		
 		$this->db->select('flights.*');
 		
@@ -132,15 +157,15 @@ class Flight_model extends CI_Model {
 		return $flights->result();
 	}
 	
-	/*
+	/**
 	 * Gets a list of airports including their airport code and name
 	 * 
 	 * @param $isDomestic indicates whether only domestic airports should be included
-	 * @return a list of airport code/name pairs
+	 * @return a list of airport information
 	 */
 	function getAirports($isDomestic) {
 		$this->db->from('airports');
-		$this->db->select('code, name');
+		$this->db->select('airport_pk, code, name, city, country');
 		if($isDomestic) {
 			$this->db->where('is_domestic',1);
 		}

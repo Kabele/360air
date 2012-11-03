@@ -83,7 +83,7 @@ class Order_model extends CI_Model {
 		
 		// Update the order to a canceled status
 		$this->db->where('order_pk', $order_id);
-		$this->db->update('orders', 'status' => 'CANCELED');
+		$this->db->update('orders', array('status' => 'CANCELED'));
 		
 		// Insert an order modification
 		$om = array(

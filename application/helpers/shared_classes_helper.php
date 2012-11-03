@@ -45,6 +45,12 @@ class Flight {
 	function print_data() {
 		print_class_vars($this);
 	}
+	
+	function get_db_vars() {
+		return array('flight_pk' => $this->flight_pk, 'available_seats' => $this->available_seats, 'total_seats' => $this->total_seats,
+			'depart_airport_id' => $this->depart_airport_id, 'arrival_airport_id' => $this->arrival_airport_id, 'depart_time' => $this->depart_time,
+			'arrival_time' => $this->arrival_time, 'ticket_price' => $this->ticket_price, 'class_type' => $this->class_type);
+	}
 }
 
 ?>

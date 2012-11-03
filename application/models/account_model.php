@@ -60,7 +60,7 @@ class Account_model extends CI_Model
 		}
     }
     
-    /*
+    /**
      * Retrieves account data from the database based on the ID
      *
      * @param id Account ID to use for looking up the account information
@@ -74,7 +74,7 @@ class Account_model extends CI_Model
     		return NULL;
     }
 	
-	/*
+	/**
 	 * Attempts to add an account to the database
 	 *
 	 * @param $data is an array containing the fields: email, password
@@ -100,7 +100,7 @@ class Account_model extends CI_Model
 		return FALSE;
 	}
 	
-	/*
+	/**
 	 * Checks if the account has a certain access by querying the existence for a permission string
 	 * in the permissions table
 	 *
