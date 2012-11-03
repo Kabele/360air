@@ -40,7 +40,6 @@ class Home extends CI_Controller
 			// If they haven't posted, assume domestic only
 			
 		}
-				
 		
 		// Load template components (all are optional)
 		$page_data['css'] = $this->load->view('home/style.css', NULL, true);
@@ -51,7 +50,6 @@ class Home extends CI_Controller
 		// Send page data to the site_main and have it rendered
 		$this->load->view('site_main', $page_data);
 	}
-	
 }
 
 ?>
