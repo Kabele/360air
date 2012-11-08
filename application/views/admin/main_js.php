@@ -29,7 +29,15 @@ $(function() {
 	$( "#button" ).button();
 	//$( "#radioset" ).buttonset();
 	
-
+	$("#add_flight").click(function() {
+		$("#comment").hide();
+	});
+	$("#update_flight").click(function() {
+		$("#comment").show();
+	});
+	$("#delete_flight").click(function() {
+		$("#comment").show();
+	});
 	
 	$( "#tabs" ).tabs();
 	

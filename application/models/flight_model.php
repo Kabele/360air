@@ -47,6 +47,9 @@ class Flight_model extends CI_Model {
 	 * @return the flight_pk for the new row if successful, -1 otherwise
 	 */
 	function addFlight(Flight $flt) {
+		// Null the pk before trying to insert
+		$flt->flight_pk = NULL;
+		
 		$this->db->insert('flights', $flt->get_db_vars());
 		
 		if($this->db->affected_rows() == 1) {
@@ -63,14 +66,22 @@ class Flight_model extends CI_Model {
 	/**
 	 * Updates a flight with the pk in the Flight object with the rest of the information
 	 * 
-	 * @param $flt Flight object
+	 * @param $flt Flight object, $reason reason for the update, $accountId id of the account doing the update
 	 * @return the flight_pk for the affected row if successful, -1 otherwise
 	 */	
-	function updateFlight(Flight $flt) {
+	function updateFlight(Flight $flt, $reason, $accountId) {
 		$this->db->where('flight_pk', $flt->flight_pk);
 		$this->db->update('flights', $flt->get_db_vars());
 		
 		if($this->db->affected_rows() == 1) {
+			// Insert a flight modification
+			$mod = array(
+				'comment'              	=> 'UPDATE: ' . $reason,
+				'account_id'            => $accountId,
+				'flight_id'             => $flt->flight_pk,
+				'time'            		=> now(),
+			);
+			$this->db->insert('flight_modifications', $mod);
 			return $flt->flight_pk;
 		}
 		return -1;
@@ -79,14 +90,22 @@ class Flight_model extends CI_Model {
 	/**
 	 * Removes a flight with the pk in the Flight object.  Cannot be undone
 	 * 
-	 * @param $flt Flight object
+	 * @param $flt Flight object, $reason reason for the update, $accountId id of the account doing the update
 	 * @return TRUE if successful, FALSE otherwise
 	 */
-	function removeFlight(Flight $flt) {
+	function removeFlight(Flight $flt, $reason, $accountId) {
 		$this->db->where('flight_pk', $flt->flight_pk);
 		$this->db->delete('flights');
 		
 		if($this->db->affected_rows() == 1) {
+			// Insert a flight modification
+			$mod = array(
+				'comment'              	=> 'REMOVED: ' . $reason,
+				'account_id'            => $accountId,
+				'flight_id'             => $flt->flight_pk,
+				'time'            		=> now(),
+			);
+			$this->db->insert('flight_modifications', $mod);
 			return TRUE;
 		}
 		return FALSE;

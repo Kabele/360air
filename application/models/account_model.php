@@ -56,7 +56,7 @@ class Account_model extends CI_Model
             return;
 		} else {
             $this->session->set_flashdata('error_message', 'You must be logged in to perform this action!');
-            redirect(base_url().'accounts/showLogin', 'location');
+            redirect('accounts/showLogin', 'location');
 		}
     }
     

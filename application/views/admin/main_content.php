@@ -1,14 +1,11 @@
 <?php echo form_open('admin/searchFlight'); ?>
 Flight ID
 <input type="text" size="20" name="flight_id" id="flight_id" value="<?php if($flight != NULL) echo $flight->flight_pk; else echo set_value('flight_id');?>">
-<?php echo form_error('flight_id');?>
 <?php echo form_submit('search_flight', 'Search');?>
 
 <?php echo form_close(); ?>
 
 <?php echo form_open('admin/CRUDFlight'); ?>
-
-<?php echo validation_errors(); ?>
 
 <table>
 <tbody>
@@ -67,9 +64,14 @@ Flight ID
 </table>
 
 <div id="radioset">
-<input type="radio" name="operation" value="add_flight">Add flight
-<input type="radio" name="operation" value="update_flight">Update flight
-<input type="radio" name="operation" value="delete_flight">Delete flight
+<input type="radio" name="operation" id="add_flight" value="add_flight">Add flight
+<input type="radio" name="operation" id="update_flight" value="update_flight">Update flight
+<input type="radio" name="operation" id="delete_flight" value="delete_flight">Delete flight
+</div>
+
+<div id="comment">
+Reason: <br />
+<textarea name="reason" id="reason"><?php echo set_value('reason')?></textarea>
 </div>
 
 <?php echo form_submit('crud_flight', 'Submit'); ?>
