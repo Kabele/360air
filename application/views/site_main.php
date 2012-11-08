@@ -10,12 +10,14 @@
 <!-- Style Sheets -->
 <link rel="stylesheet" type="text/css" href="<?=base_url('css/main.css')?>">
 <link rel="stylesheet" type="text/css" href="<?=base_url('css/jquery-ui-1.9.0.custom.css')?>">
+<link rel="stylesheet" type="text/css" href="<?=base_url('css/jquery-ui-timepicker-addon.css')?>">
 
 <?php if(isset($css)) echo '<style>'.$css.'</style>'; ?>
 
 <!-- standard jquery, jquery plugins, and universal javascript -->
 <script src="<?=base_url('js/jquery-1.8.2.js')?>"></script>
 <script src="<?=base_url('js/jquery-ui-1.9.0.custom.js')?>"></script>
+<script src="<?=base_url('js/jquery-ui-timepicker-addon.js')?>"></script>
 
 <?php if(isset($js)) echo $js;?>
 

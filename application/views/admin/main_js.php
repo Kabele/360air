@@ -2,41 +2,37 @@
 $(function() {
 	
 	$( "#accordion" ).accordion();
-	
 
+	//YYYY-MM-DD HH:MM:SS AM/PM
 	
-	var availableTags = [
-		"ActionScript",
-		"AppleScript",
-		"Asp",
-		"BASIC",
-		"C",
-		"C++",
-		"Clojure",
-		"COBOL",
-		"ColdFusion",
-		"Erlang",
-		"Fortran",
-		"Groovy",
-		"Haskell",
-		"Java",
-		"JavaScript",
-		"Lisp",
-		"Perl",
-		"PHP",
-		"Python",
-		"Ruby",
-		"Scala",
-		"Scheme"
-	];
-	$( "#autocomplete" ).autocomplete({
-		source: availableTags
-	});
-	
+	$( "#depart_date_picker" ).datetimepicker({
+        defaultDate: new Date(),
+        altField: '#depart_time',
+        altFieldTimeOnly: false,
+        altFormat: 'yy-mm-dd',
+        altTimeFormat: 'hh:mm:ss TT',
+        timeFormat: 'hh:mm tt',
+        changeMonth: true,
+        numberOfMonths: 1,
+    });
+    $( "#arrival_date_picker" ).datetimepicker({
+        defaultDate: new Date(),
+        altField: '#arrival_time',
+        altFieldTimeOnly: false,
+        altFormat: 'yy-mm-dd',
+        altTimeFormat: 'hh:mm:ss TT',
+        timeFormat: 'hh:mm tt',
+        changeMonth: true,
+        numberOfMonths: 1,
+    });
+
+    $('input[name="operation"]').change(function() {
+		//alert('selected');
+    });
 
 	
 	$( "#button" ).button();
-	$( "#radioset" ).buttonset();
+	//$( "#radioset" ).buttonset();
 	
 
 	
