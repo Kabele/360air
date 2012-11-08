@@ -266,7 +266,7 @@ $config['sess_time_to_update']	= 300;
 |
 */
 $config['cookie_prefix']	= "360air_";
-$config['cookie_domain']	= ".360-air.com";
+$config['cookie_domain']	= "";
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;
 

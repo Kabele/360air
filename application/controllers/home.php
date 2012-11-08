@@ -11,7 +11,7 @@ class Home extends CI_Controller
 		
 		$this->load->model('Flight_model');
 	}
-
+	
 	public function index() {
 		// Get all data that will be displayed on the from page
 		$data['new_flights'] = $this->Flight_model->getNewlyAddedFlights();

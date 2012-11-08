@@ -11,7 +11,7 @@ class Account_model extends CI_Model
 		$this->session->unset_userdata('logged_in');
 		
     	// Get the users data from the db
-        $res = $this->db->get_where('accounts', array('email' => $email, 'password' => $password), 1, 0);
+        $res = $this->db->get_where('accounts', array('email' => $email), 1, 0);
         
         // Account doesnt even exist, bail
         if ($res->num_rows() == 0)
@@ -81,6 +81,13 @@ class Account_model extends CI_Model
 	 * @return true if adding the account to the database was successful. False if otherwise
 	 */
 	function addAccount($data) {
+		// Make sure the account email doesn't already exist
+        $res = $this->db->get_where('accounts', array('email' => $data['email']));
+        
+        // Account email already exists
+        if ($res->num_rows() != 0)
+            return FALSE;
+	
 		// Generate salt for password
 		$this->load->helper('string');
 		$salt = random_string('alnum', 16);
