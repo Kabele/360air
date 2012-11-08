@@ -42,13 +42,17 @@ class Admin extends CI_Controller
 			
 			if($this->form_validation->run() == FALSE) {
 				$data['flight'] = NULL;
+				$this->session->set_flashdata('error_message', validation_errors());
 			} else {
 				
-				$data['flight'] = $this->Flight_model->getFlight($this->input->post('flight_id'));
-				$data['formatted_depart'] = date('m/d/Y h:i a', $data['flight']->depart_time);
-				$data['formatted_arrival'] = date('m/d/Y h:i a', $data['flight']->arrival_time);
-				$data['depart_time'] = date('Y-m-d h:i:s A', $data['flight']->depart_time);
-				$data['arrival_time'] = date('Y-m-d h:i:s A', $data['flight']->arrival_time);
+				$flt = $this->Flight_model->getFlight($this->input->post('flight_id'));
+				$data['flight'] = $flt;
+				if($flt != NULL) {
+					$data['formatted_depart'] = date('m/d/Y h:i a', $flt->depart_time);
+					$data['formatted_arrival'] = date('m/d/Y h:i a', $flt->arrival_time);
+					$data['depart_time'] = date('Y-m-d h:i:s A', $flt->depart_time);
+					$data['arrival_time'] = date('Y-m-d h:i:s A', $flt->arrival_time);
+				}
 			}
 					
 			// Load template components (all are optional)
@@ -95,42 +99,84 @@ class Admin extends CI_Controller
 		//if($this->Account_model->accountHasPermissions($usrdata['account_id'], 'ADMIN')) {
 			if($this->input->post('crud_flight')) {
 				// Validation rules (Everything is required)
-				// fields from form here
+				$this->form_validation->set_rules('arrival_airport_code', 'Arrival Airport Code', 'trim|alpha_numeric|required|callback_check_airport_code');
+				$this->form_validation->set_rules('depart_airport_code', 'Depart Airport Code', 'trim|alpha_numeric|required|callback_check_airport_code');
+				$this->form_validation->set_rules('arrival_time', 'Arrival Time', 'required|prep_for_form');
+				$this->form_validation->set_rules('depart_time', 'Depart Time', 'required|prep_for_form');
+				$this->form_validation->set_rules('available_seats', 'Available Seats', 'is_natural');
+				$this->form_validation->set_rules('total_seats', 'Total Seats', 'required|is_natural_no_zero|greater_than_equal_to[available_seats]');
+				$this->form_validation->set_rules('flight_class', 'Flight Class', 'required');
+				$this->form_validation->set_rules('price', 'Ticket Price', 'required|numeric|greater_than[0]');
+				$this->form_validation->set_rules('operation', 'Add/Update/Delete', 'required');
 				
-				//if($this->form_validation->run() == FALSE) {
-					$data['flight'] = NULL;
-				//} else {
+				// Build the flight object
+				$flt = new Flight();
+				$flt->flight_pk = $this->input->post('flight_id');
+				$flt->arrival_airport_code = $this->input->post('arrival_airport_code');
+				$flt->arrival_airport_id = $this->Flight_model->airportCodeToId($flt->arrival_airport_code);
+				$flt->depart_airport_code = $this->input->post('depart_airport_code');
+				$flt->depart_airport_id = $this->Flight_model->airportCodeToId($flt->depart_airport_code);
+				$flt->arrival_time = human_to_unix($this->input->post('arrival_time'));
+				$flt->depart_time = human_to_unix($this->input->post('depart_time'));
+				$flt->total_seats = $this->input->post('total_seats');
+				$flt->available_seats = $flt->total_seats;
+				$flt->class_type = $this->input->post('flight_class');
+				$flt->ticket_price = $this->input->post('price');
+				
+				// Set the date data
+				$data['formatted_depart'] = date('m/d/Y h:i a', $flt->depart_time);
+				$data['formatted_arrival'] = date('m/d/Y h:i a', $flt->arrival_time);
+				$data['depart_time'] = date('Y-m-d h:i:s A', $flt->depart_time);
+				$data['arrival_time'] = date('Y-m-d h:i:s A', $flt->arrival_time);
+				
+				if($this->form_validation->run() == FALSE) {
+					$data['flight'] = $flt;
+					$this->session->set_flashdata('error_message', validation_errors());
+				} else {
 					// Adding a flight
 					$oper = $this->input->post('operation');
 					if($oper == 'add_flight') {
-						// Build the flight object
-						$flt = new Flight();
-						$flt->arrival_airport_code = $this->input->post('arrival_airport_code');
-						$flt->depart_airport_code = $this->input->post('depart_airport_code');
-						$flt->arrival_time = human_to_unix($this->input->post('arrival_time'));
-						$flt->depart_time = human_to_unix($this->input->post('depart_time'));
-						$flt->total_seats = $this->input->post('total_seats');
-						$flt->available_seats = $flt->total_seats;
-						$flt->class_type = $this->input->post('flight_class');
-						$flt->ticket_price = $this->input->post('price');
+						
+						$result = $this->Flight_model->addFlight($flt);			
+						if($result != -1) {
+							$flt->flight_pk = $result;
+							$this->session->set_flashdata('status_message', 'Flight number ' . $result . ' scheduled');
+						} else {
+							$this->session->set_flashdata('status_message', 'Flight could not be scheduled');
+						}
 						
 						// Populate all the fields with the data from the form
 						$data['flight'] = $flt;
+					
 						
-						//TODO:  Figure out how to use the radio buttons to do different actions with crud_flight
-						// posting.  Make sure to get all fields and have them validated.  
 						
-
-						$result = $this->Flight_model->addFlight($flt);
-						if($result != TRUE) {
-							$this->session->set_flashdata('result', 'Flight scheduled');
+					// Updating a flight
+					} else if($oper == 'update_flight') {
+						
+						$result = $this->Flight_model->updateFlight($flt);
+						if($result != -1) {
+							$flt->flight_pk = $result;
+							$this->session->set_flashdata('status_message', 'Flight number ' . $result . ' updated');
 						} else {
-							$this->session->set_flashdata('result', 'Flight could not be scheduled');
+							$this->session->set_flashdata('status_message', 'Flight number ' . $flt->flight_pk . ' could not be updated');
 						}
+						// Populate all the fields with the data from the form
+						$data['flight'] = $flt;
+					
+					// Deleting a flight
+					} else if($oper == 'delete_flight') {
+						$result = $this->Flight_model->removeFlight($flt);
+						if($result != FALSE) {
+							$this->session->set_flashdata('status_message', 'Flight number ' . $result . ' removed');
+						} else {
+							$this->session->set_flashdata('status_message', 'Flight number ' . $flt->flight_pk . ' could not be removed');
+						}
+						// Populate all the fields with the data from the form
+						$data['flight'] = NULL;
 					} else {
 						$data['flight'] = NULL;
 					}
-				//}
+				}
 				
 				// Load template components (all are optional)
 				$page_data['css'] = $this->load->view('admin/main_style.css', NULL, true);
@@ -147,6 +193,15 @@ class Admin extends CI_Controller
 			$this->session->set_flashdata('error_message', 'You do not have sufficient privelages');
 			redirect('home/index', 'location');
 		}*/
+	}
+	
+	function check_airport_code($code) {
+		if($this->Flight_model->airportCodeToId($code) == NULL) {
+			$this->form_validation->set_message('check_airport_code', 'The %s field was not a valid airport code');
+			return FALSE;
+		} else {
+			return TRUE;
+		}
 	}
 	
 }

@@ -91,6 +91,9 @@ class Test extends CI_Controller
 		var_dump( $this->Flight_model->getAirports($isDomestic));
 	}
 	
+	public function airportCodeToId($code) {
+		echo $this->Flight_model->airportCodeToId($code);
+	}
 	
 }
 

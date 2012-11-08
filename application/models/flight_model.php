@@ -44,13 +44,16 @@ class Flight_model extends CI_Model {
 	 * Add a flight to the database
 	 *
 	 * @param $flt Flight object
-	 * @return TRUE if successful, FALSE if otherwise
+	 * @return the flight_pk for the new row if successful, -1 otherwise
 	 */
 	function addFlight(Flight $flt) {
 		$this->db->insert('flights', $flt->get_db_vars());
 		
 		if($this->db->affected_rows() == 1) {
-			return $this->db->insert_id();
+			
+			// Return the flight_pk of the newly added row
+			$flight = $this->db->order_by('flight_pk', 'desc')->limit(1)->get('flights')->row();
+			return $flight->flight_pk;
 		}
 			
 			
@@ -61,11 +64,27 @@ class Flight_model extends CI_Model {
 	 * Updates a flight with the pk in the Flight object with the rest of the information
 	 * 
 	 * @param $flt Flight object
-	 * @return TRUE if successful, FALSE otherwise
+	 * @return the flight_pk for the affected row if successful, -1 otherwise
 	 */	
 	function updateFlight(Flight $flt) {
 		$this->db->where('flight_pk', $flt->flight_pk);
 		$this->db->update('flights', $flt->get_db_vars());
+		
+		if($this->db->affected_rows() == 1) {
+			return $flt->flight_pk;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Removes a flight with the pk in the Flight object.  Cannot be undone
+	 * 
+	 * @param $flt Flight object
+	 * @return TRUE if successful, FALSE otherwise
+	 */
+	function removeFlight(Flight $flt) {
+		$this->db->where('flight_pk', $flt->flight_pk);
+		$this->db->delete('flights');
 		
 		if($this->db->affected_rows() == 1) {
 			return TRUE;
@@ -106,8 +125,8 @@ class Flight_model extends CI_Model {
 		
 		$this->db->select('flights.*');
 		
-		$flights = $this->db->order_by('flight_pk', 'desc')->limit(5)->get('flights');
-		return $flights->result();
+		$flights = $this->db->order_by('flight_pk', 'desc')->limit(5)->get('flights')->result();
+		return $flights;
 	}
 	
 	/**
@@ -178,6 +197,27 @@ class Flight_model extends CI_Model {
 		$airports = $this->db->get();
 		
 		return $airports->result();
+	}
+	
+	/**
+	 * 
+	 * Returns the airport_pk corresponding to the given code
+	 * 
+	 * @param $airportCode
+	 */
+	function airportCodeToId($airportCode) {
+		if($airportCode != NULL) {
+			$this->db->from('airports');
+			$this->db->select('airport_pk');
+			$this->db->where('code', $airportCode);
+			
+			$a = $this->db->get()->row();
+			if($a != NULL)
+				return $a->airport_pk;
+			return NULL;
+		} else {
+			return NULL;
+		}
 	}
 }
 

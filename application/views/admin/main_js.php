@@ -25,11 +25,6 @@ $(function() {
         changeMonth: true,
         numberOfMonths: 1,
     });
-
-    $('input[name="operation"]').change(function() {
-		//alert('selected');
-    });
-
 	
 	$( "#button" ).button();
 	//$( "#radioset" ).buttonset();

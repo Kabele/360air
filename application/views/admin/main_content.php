@@ -1,18 +1,14 @@
 <?php echo form_open('admin/searchFlight'); ?>
 Flight ID
-<input type="text" size="20" name="flight_id" id="flight_id" value="<?php echo set_value('flight_id');?>">
+<input type="text" size="20" name="flight_id" id="flight_id" value="<?php if($flight != NULL) echo $flight->flight_pk; else echo set_value('flight_id');?>">
 <?php echo form_error('flight_id');?>
 <?php echo form_submit('search_flight', 'Search');?>
 
 <?php echo form_close(); ?>
 
-
-<?php var_dump($flight);?>
-
 <?php echo form_open('admin/CRUDFlight'); ?>
 
-
-
+<?php echo validation_errors(); ?>
 
 <table>
 <tbody>
@@ -26,6 +22,7 @@ Flight ID
 
 <tr>
 <td>
+<input type="hidden" name="flight_id" value="<? if($flight != NULL) echo $flight->flight_pk; ?>" />
 <input type="text" size="20" name="depart_airport_code" id="depart_airport_code" value="<?php if($flight != NULL) echo $flight->depart_airport_code; ?>">
 </td>
 <td>
@@ -71,8 +68,8 @@ Flight ID
 
 <div id="radioset">
 <input type="radio" name="operation" value="add_flight">Add flight
-<input type="radio" name="operation" value="delete_flight">Delete flight
 <input type="radio" name="operation" value="update_flight">Update flight
+<input type="radio" name="operation" value="delete_flight">Delete flight
 </div>
 
 <?php echo form_submit('crud_flight', 'Submit'); ?>
