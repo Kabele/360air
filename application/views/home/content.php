@@ -1,5 +1,4 @@
 <?=$this->load->view('flights/searchbox_content', NULL, true)?>
-
 		
 <h2>Recently Added Flights</h2>
 <div class="ui-widget-content ui-corner-all" style="margin-bottom: 20px">
