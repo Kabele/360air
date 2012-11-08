@@ -14,32 +14,3 @@
 	float: left;
 	margin: 0 4px;
 }
-
-.majorHeading {
-	background-image:url(<?=base_url('images/major_black_bg.gif')?>);
-	background-repeat:repeat-x;
-	background-position:top center;
-	color:#eee;
-	font-weight:bold;
-	margin:0;
-	padding:7px 0 8px 10px;
-	background-color:#000;
-	margin-top: 10px; /* space provided from on top of the element*/
-	-moz-border-radius: 5px 5px 5px 5px;
-}
-
-.sectionHeading {
-	color: #FFFFFF;
-	text-align: left;
-	font-weight: bold;
-	font-size: 1em;
-	background: #212121 url(<?=base_url('images/gradient_bg.png')?>) repeat-x 50%;
-	/* all corners rounded: -moz-border-radius: 5px 5px 5px 5px;*/
-	/* only top right and left rounded */
-	-moz-border-radius-topleft: 5px;
-	-moz-border-radius-topright: 5px;
-	padding-left: 2px; /*originally right 8px*/
-	text-decoration: none;
-	margin-top: 10px; /* space provided from on top of the element*/
-	float: clear;
-}

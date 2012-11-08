@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url('css/main.css')?>">
 <link rel="stylesheet" type="text/css" href="<?=base_url('css/jquery-ui-1.9.0.custom.css')?>">
 
-<?php if(isset($css)) echo '<style'.$css.'</style>'; ?>
+<?php if(isset($css)) echo '<style>'.$css.'</style>'; ?>
 
 <!-- standard jquery, jquery plugins, and universal javascript -->
 <script src="<?=base_url('js/jquery-1.8.2.js')?>"></script>
@@ -26,17 +26,36 @@
 <font color="red" size="6"><b>360-air.com</b></font>
   
 <div id="navlinks" align="right">
-	<a href="Main Page.html">Home</a>
-	<a href="Flights.html">Flights</a>
-	<a href="News.html">News</a>
-	<a href="Account.html">Account</a>
-	<a href="Contact.html">Contact</a>
+	<a href="<?=site_url()?>">Home</a>
+	<a href="<?=site_url('flights')?>">Flights</a>
+	<a href="<?=site_url('news')?>">News</a>
+	<a href="<?=site_url('accounts')?>">Account</a>
+	<a href="<?=site_url('contact')?>">Contact</a>
 </div>
 
 <div id="wrapper">
 <div id="content">
+<?php
+if($this->session->flashdata('status_message') || isset($status_message)) {
+	$msg = '';
+	if($this->session->flashdata('status_message'))
+		$msg = $this->session->flashdata('status_message');
+	else
+		$msg = $status_message;
+	echo '<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>'.$msg.'</p></div></div><br />';
+}
 
-<?php if(isset($content)) echo $content ?>
+if($this->session->flashdata('error_message') || isset($error_message)) {
+	$msg = '';
+	if($this->session->flashdata('error_message'))
+		$msg = $this->session->flashdata('error_message');
+	else
+		$msg = $error_message;
+	echo '<div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><strong>Error:</strong> '.$msg.'</p></div></div><br />';
+}
+
+if(isset($content)) echo $content;
+?>
 
 </div>
 </div>

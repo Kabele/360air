@@ -1,7 +1,8 @@
-<br></br><br></br>
+<?=$this->load->view('flights/searchbox_content', NULL, true)?>
 
-
-
+<h2>Search Results</h2>
+<?php if(isset($search_results)) var_dump($search_results); ?>
+		
 <table>
 <tbody>
 
