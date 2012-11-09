@@ -5,7 +5,13 @@ class Account_model extends CI_Model
 		parent::__construct();
 	}
 	
-	// Check a email / password combo against the DB and setup session data. Return's true if login is successful
+	/*
+	 * Check a email / password combo against the DB and setup session data
+	 *
+	 * @param $email Email of the user
+	 * @param $password Plain text password submitted by the user
+	 * @return true if login is successful
+	 */
 	function doAccountLogin($email, $password)
     {
 		$this->session->unset_userdata('logged_in');
@@ -35,7 +41,6 @@ class Account_model extends CI_Model
 		$this->session->set_userdata('logged_in', true);
 		$this->session->set_userdata('email', $row->email);
 		$this->session->set_userdata('account_id', $row->account_pk);
-		$this->session->set_userdata('address_id', $row->address_id);
         
         return true;
     }
@@ -98,6 +103,8 @@ class Account_model extends CI_Model
 			'password'              => md5(md5($data['password']) . $salt),
 			'salt'              	=> $salt,
 			'address_id'            => 0,
+			'first_name'			=> $data['first_name'],
+			'last_name'				=> $data['last_name']
 		);
 		$this->db->insert('accounts', $account);
 		
@@ -105,6 +112,66 @@ class Account_model extends CI_Model
 			return TRUE;
 		
 		return FALSE;
+	}
+	
+	/*
+	 * Attempt to change a users password
+	 *
+	 * @param $account_id ID of the user account that needs its password changed
+	 * @param $old_pass Unhashed plain text new password to replace the old one with
+	 * @param $new_pass Unhashed plain text new password to replace the old one with
+	 * @return TRUE if successful
+	 */
+	function change_password($account_id, $old_pass, $new_pass) {
+		// Get account row in the database
+		$row = $this->Account_model->getAccount($account_id);
+		
+		// Hash the old password with the salt and compare it to the password in the DB
+		$old_hash = md5(md5($old_pass) . $row->salt);
+		if($old_hash != $row->password)
+			return FALSE;
+
+		// Generate a new salt for password, calculate the hash, and update the db
+		$this->load->helper('string');
+		$salt = random_string('alnum', 16);
+		$new_hash = md5(md5($new_pass) . $salt);
+		$this->db->where('account_pk', $account_id);
+		$this->db->update('accounts', array('password' => $new_hash, 'salt' => $salt));
+		
+		return $this->db->affected_rows() == 1;
+	}
+	
+	/*
+	 * Reset password for a user account to a new random password
+	 *
+	 * @param $email Email of the user
+	 * @return TRUE if successful
+	 */
+	function reset_password($email) {
+		// If the account doesnt exist, bail
+		$account = $this->Account_model->getAccountByEmail($email);
+		if($account == NULL)
+			return FALSE;
+		
+		// Generate and send the password to the user
+		$this->load->helper('string');
+		$new_pass = random_string('alnum', 8);
+		$this->load->library('email');
+		$this->email->from('admin@360-air.com', '360-air.com');
+		$this->email->to($email);
+		$this->email->subject('360-air.com: Password Reset');
+		$this->email->message('Your new password is '.$new_pass);
+		if(!$this->email->send())
+			return FALSE;
+		
+		// Generate a new salt, calculate the new hash, and update the db
+		$salt = random_string('alnum', 16);
+		$new_hash = md5(md5($new_pass) . $salt);
+		$this->db->where('account_pk', $account->account_pk);
+		$this->db->update('accounts', array('password' => $new_hash, 'salt' => $salt));
+		if($this->db->affected_rows() != 1)
+			return FALSE;
+		return TRUE;
 	}
 	
 	/**
@@ -131,25 +198,30 @@ class Account_model extends CI_Model
 	 * @return The account if found, NULL otherwise
 	 */
 	function getAccountByEmail($email) {
-		$account = $this->db->get_where('accounts', array('email' => $email), 1, 0);
+		$this->db->like('email', $email, 'none');
+		$this->db->limit(1);
+		$account = $this->db->get('accounts');
 		
-		if($account->num_rows() > 0)
-			return $account->result();
+		if($account->num_rows() == 1)
+			return $account->row();
 			
 		return NULL;
 	}
 	
-/**
+	/**
 	 * Gets an account using email as criterion
 	 * 
 	 * @param $firstName, $lastName first and last name on the account
 	 * @return The account if found, NULL otherwise
 	 */
 	function getAccountByName($firstName, $lastName) {
-		$account = $this->db->get_where('accounts', array('first_name' => $firstName, 'last_name' => $lastName), 1, 0);
+		$this->db->like('first_name', $firstName, 'none');
+		$this->db->like('last_name', $lastName, 'none');
+		$this->db->limit(1);
+		$account = $this->db->get_where('accounts');
 		
-		if($account->num_rows() > 0)
-			return $account->result();
+		if($account->num_rows() == 1)
+			return $account->row();
 			
 		return NULL;
 	}

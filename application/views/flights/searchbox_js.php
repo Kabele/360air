@@ -5,17 +5,17 @@ function updateTags() {
 
 domesticCodes = [
 	<?php
-	/*foreach($airports as $a) {
+	foreach($airports as $a) {
 		if($a->is_domestic) echo '"'.$a->code.'",';
-	}*/
+	}
 	?>
   ];
 
 intlCodes = [
 	<?php
-	/*foreach($airports as $a) {
+	foreach($airports as $a) {
 		echo '"'.$a->code.'",';
-	}*/
+	}
 	?>
  ];
 }
