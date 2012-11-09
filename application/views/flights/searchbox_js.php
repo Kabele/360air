@@ -48,7 +48,7 @@ updateAutoComplete($("#is_domestic").val());
 $( "#search_submit" ).button();
 
 $( "#depart_date_start_picker" ).datepicker({
-	defaultDate: "+1w",
+	defaultDate: new Date(),
 	altField: '#depart_date_start',
 	altFormat: '@',
 	changeMonth: true,
@@ -58,7 +58,7 @@ $( "#depart_date_start_picker" ).datepicker({
 	}
 });
 $( "#depart_date_end_picker" ).datepicker({
-	defaultDate: "+1w",
+	defaultDate: new Date(),
 	altField: '#depart_date_end',
 	altFormat: '@',
 	changeMonth: true,
@@ -68,7 +68,7 @@ $( "#depart_date_end_picker" ).datepicker({
 	}
 });
 $( "#arrival_date_start_picker" ).datepicker({
-	defaultDate: "+1w",
+	defaultDate: new Date(),
 	altField: '#arrival_date_start',
 	altFormat: '@',
 	changeMonth: true,
@@ -78,7 +78,7 @@ $( "#arrival_date_start_picker" ).datepicker({
 	}
 });
 $( "#arrival_date_end_picker" ).datepicker({
-	defaultDate: "+1w",
+	defaultDate: new Date(),
 	altField: '#arrival_date_end',
 	altFormat: '@',
 	changeMonth: true,
