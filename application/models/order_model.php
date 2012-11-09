@@ -104,6 +104,21 @@ class Order_model extends CI_Model {
 		$query = $this->db->get_where('orders', array('account_id' => $account_id));
 		return $query->result();
 	}
+	
+	/*
+	 * Gets an order by its id (pk)
+	 * 
+	 * @param $order_id
+	 * @return Row of the order
+	 */
+	function getOrder($orderId) {
+		$query = $this->db->get_where('orders', array('order_pk' => $orderId), 1, 0);
+		
+		if($query->num_rows() > 0)
+			return $query->row();
+			
+		return FALSE;
+	}
 }
 
 ?>

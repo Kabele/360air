@@ -123,5 +123,35 @@ class Account_model extends CI_Model
 			
 		return FALSE;
 	}
+	
+	/**
+	 * Gets an account using email as criterion
+	 * 
+	 * @param $email email address for the account
+	 * @return The account if found, NULL otherwise
+	 */
+	function getAccountByEmail($email) {
+		$account = $this->db->get_where('accounts', array('email' => $email), 1, 0);
+		
+		if($account->num_rows() > 0)
+			return $account->result();
+			
+		return NULL;
+	}
+	
+/**
+	 * Gets an account using email as criterion
+	 * 
+	 * @param $firstName, $lastName first and last name on the account
+	 * @return The account if found, NULL otherwise
+	 */
+	function getAccountByName($firstName, $lastName) {
+		$account = $this->db->get_where('accounts', array('first_name' => $firstName, 'last_name' => $lastName), 1, 0);
+		
+		if($account->num_rows() > 0)
+			return $account->result();
+			
+		return NULL;
+	}
 }
 ?>

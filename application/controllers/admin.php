@@ -25,10 +25,10 @@ class Admin extends CI_Controller
 		$data['flight'] = NULL;
 		
 		// Load template components (all are optional)
-		$page_data['css'] = $this->load->view('admin/main_style.css', NULL, true);
-		$page_data['js'] = $this->load->view('admin/main_js', NULL, true);
-		$page_data['content'] = $this->load->view('admin/main_content', $data, true);
-		$page_data['widgets'] = $this->load->view('admin/main_widgets', NULL, true);
+		$page_data['css'] = $this->load->view('admin/flights_style.css', NULL, true);
+		$page_data['js'] = $this->load->view('admin/flights_js', NULL, true);
+		$page_data['content'] = $this->load->view('admin/flights_content', $data, true);
+		$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
 		
 		// Send page data to the site_main and have it rendered
 		$this->load->view('site_main', $page_data);
@@ -58,42 +58,16 @@ class Admin extends CI_Controller
 			}
 					
 			// Load template components (all are optional)
-			$page_data['css'] = $this->load->view('admin/main_style.css', NULL, true);
-			$page_data['js'] = $this->load->view('admin/main_js', NULL, true);
-			$page_data['content'] = $this->load->view('admin/main_content', $data, true);
-			$page_data['widgets'] = $this->load->view('admin/main_widgets', NULL, true);
+			$page_data['css'] = $this->load->view('admin/flights_style.css', NULL, true);
+			$page_data['js'] = $this->load->view('admin/flights_js', NULL, true);
+			$page_data['content'] = $this->load->view('admin/flights_content', $data, true);
+			$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
 			
 			// Send page data to the site_main and have it rendered
 			$this->load->view('site_main', $page_data);
 		}
 	}
 
-	public function cancelOrder() {
-		$usrdata = $this->session->all_userdata();
-		if($this->Account_model->accountHasPermissions($usrdata['account_id'], 'ADMIN')) {
-			if($this->input->post('cancel_order')) {
-				// Validation rules
-				$this->form_validation->set_rules('account_id', 'Account Id', 'required');
-				$this->form_validation->set_rules('order_id', 'Order Id', 'required');
-				
-				if($this->form_validation->run() == FALSE) {
-					$this->session->set_flashdata('error_message', validation_errors());
-				} else {
-					$result = $this->Order_model->cancelOrder($this->post('account_id'), $this->post('order_id'));
-					if($result == TRUE) {
-						$this->session->set_flashdata('result', 'Order successfully canceled');
-					} else {
-						$this->session->set_flashdata('result', 'Order could not be canceled');
-					}
-				}
-					
-			}
-		} else {
-			// Redirect with error message
-			$this->session->set_flashdata('error_message', 'You do not have sufficient privelages');
-			redirect('home/index', 'location');
-		}
-	}
 	
 	// Scheduling, Updating, Cancelling flights
 	public function CRUDFlight() {
@@ -192,10 +166,10 @@ class Admin extends CI_Controller
 			}
 			
 			// Load template components (all are optional)
-			$page_data['css'] = $this->load->view('admin/main_style.css', NULL, true);
-			$page_data['js'] = $this->load->view('admin/main_js', NULL, true);
-			$page_data['content'] = $this->load->view('admin/main_content', $data, true);
-			$page_data['widgets'] = $this->load->view('admin/main_widgets', NULL, true);
+			$page_data['css'] = $this->load->view('admin/flights_style.css', NULL, true);
+			$page_data['js'] = $this->load->view('admin/flights_js', NULL, true);
+			$page_data['content'] = $this->load->view('admin/flights_content', $data, true);
+			$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
 			
 			// Send page data to the site_main and have it rendered
 			$this->load->view('site_main', $page_data);
@@ -203,8 +177,95 @@ class Admin extends CI_Controller
 		}
 	}
 	
+	public function orders() {
+		$this->isAdmin();
+		
+		$data = NULL;
+		
+		// Load template components (all are optional)
+		$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
+		$page_data['js'] = $this->load->view('admin/orders_js', NULL, true);
+		$page_data['content'] = $this->load->view('admin/orders_content', $data, true);
+		$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
+		
+		// Send page data to the site_main and have it rendered
+		$this->load->view('site_main', $page_data);
+	}
 	
-	function isAdmin() {
+	public function searchOrders() {
+		$this->isAdmin();
+		
+		if($this->input->post('search_orders')) {
+			
+			$firstName = $this->input->post('first_name');
+			$lastName = $this->input->post('last_name');
+			$email = $this->input->post('email');
+			$flightId = $this->input->post('flight_number');
+			$orderId = $this->input->post('booking_number');
+			
+			if($firstName != NULL && $lastName != NULL) {
+				$account = $this->Account_model->getAccountByName($firstName, $lastName);
+			}
+			
+			if($email != NULL) {
+				// Search the account by email
+				$account = $this->Account_model->getAccountByEmail($email);
+			}
+			
+			if($flightId != NULL) {
+				// Get account by searching orders using flight id to narrow results
+			}
+			
+			if($orderId != NULL) {
+				// Search for account by order id
+				$order = $this->Order_model->getOrder($orderId);
+				$account = $this->Account_model->getAccount($order->account_id);
+			}
+			
+			$data['account'] = $account;
+		
+			// Load template components (all are optional)
+			$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
+			$page_data['js'] = $this->load->view('admin/orders_js', NULL, true);
+			$page_data['content'] = $this->load->view('admin/orders_content', $data, true);
+			$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
+			
+			// Send page data to the site_main and have it rendered
+			$this->load->view('site_main', $page_data);
+		}
+	}
+	
+	public function cancelOrder() {
+		$usrdata = $this->session->all_userdata();
+		if($this->Account_model->accountHasPermissions($usrdata['account_id'], 'ADMIN')) {
+			if($this->input->post('cancel_order')) {
+				// Validation rules
+				$this->form_validation->set_rules('account_id', 'Account Id', 'required');
+				$this->form_validation->set_rules('order_id', 'Order Id', 'required');
+				
+				if($this->form_validation->run() == FALSE) {
+					$this->session->set_flashdata('error_message', validation_errors());
+				} else {
+					$result = $this->Order_model->cancelOrder($this->post('account_id'), $this->post('order_id'));
+					if($result == TRUE) {
+						$this->session->set_flashdata('result', 'Order successfully canceled');
+					} else {
+						$this->session->set_flashdata('result', 'Order could not be canceled');
+					}
+				}
+					
+			}
+		} else {
+			// Redirect with error message
+			$this->session->set_flashdata('error_message', 'You do not have sufficient privelages');
+			redirect('home/index', 'location');
+		}
+	}
+	
+	/*
+	 * Helper functions
+	 */
+	private function isAdmin() {
 		$this->Account_model->checkLogin();
 		$usrdata = $this->session->all_userdata();
 		if($this->Account_model->accountHasPermission($usrdata['account_id'], 'ADMIN')) {
@@ -217,13 +278,13 @@ class Admin extends CI_Controller
 		}
 	}
 	
-	function getUserId() {
+	private function getUserId() {
 		$this->Account_model->checkLogin();
 		$usrdata = $this->session->all_userdata();
 		return $usrdata['account_id'];
 	}
 	
-	function check_airport_code($code) {
+	private function check_airport_code($code) {
 		if($this->Flight_model->airportCodeToId($code) == NULL) {
 			$this->form_validation->set_message('check_airport_code', 'The %s field was not a valid airport code');
 			return FALSE;
