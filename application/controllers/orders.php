@@ -44,9 +44,13 @@ class Orders extends CI_Controller
 			return;
 		}
 		
+		$data = array('flight' => $flight, 'order' => $order);
+		
 		// View a details for an order on the currently logged in account
+		$page_data['css'] = $this->load->view('orders/view_style.css', NULL, true);
 		$page_data['js'] = $this->load->view('orders/view_js', '', true);
-		$page_data['content'] = $this->load->view('orders/view_content', array('flight' => $flight, 'order' => $order), true);
+		$page_data['content'] = $this->load->view('orders/view_content', $data, true);
+		$page_data['widgets'] = $this->load->view('orders/view_widgets', $data, true);
 		
 		// Send page data to the site_main and have it rendered
 		$this->load->view('site_main', $page_data);

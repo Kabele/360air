@@ -7,4 +7,9 @@
 <?=form_close()?>
 <?=anchor('accounts/resetpw', 'Forgot Password')?><br />
 <?=anchor('accounts/showLogin', 'Register Here!')?>
+<script>
+$(function() {
+$( "#login" ).button();
+});
+</script>
 </div>

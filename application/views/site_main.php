@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="Air360 is a test airline web application" /> 
 <?php if(isset($nocache)) echo '<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">';?>
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 
 <!-- Style Sheets -->
 <link rel="stylesheet" type="text/css" href="<?=base_url('css/main.css')?>">
@@ -23,16 +24,20 @@
 
 </head>
 <body>
+
 <div id="container">
-<img src="<?=base_url('images/airplane_new.jpeg')?>"></img><br />
-<font color="red" size="6"><b>360-air.com</b></font>
-  
-<div id="navlinks" align="right">
-	<a href="<?=site_url()?>">Home</a>
-	<a href="<?=site_url('flights')?>">Flights</a>
-	<a href="<?=site_url('news')?>">News</a>
-	<a href="<?=site_url('accounts')?>">Account</a>
-	<a href="<?=site_url('contact')?>">Contact</a>
+
+<div id="header">
+	<img src="<?=base_url('images/airplane_silo_inverted.png')?>"></img><br />
+	<h1>360-air.com</h1>
+	  
+	<div id="navlinks" align="right">
+		<a href="<?=site_url()?>">Home</a>
+		<a href="<?=site_url('flights')?>">Flights</a>
+		<a href="<?=site_url('news')?>">News</a>
+		<a href="<?=site_url('accounts')?>">Account</a>
+		<a href="<?=site_url('contact')?>">Contact</a>
+	</div>
 </div>
 
 <div id="wrapper">

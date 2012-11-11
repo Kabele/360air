@@ -1,72 +1,85 @@
 html,body{
-margin:0;
-padding:0;
-background: #FFF;
+	margin:0;
+	padding:0;
+	background: #FFF;
 }
 
 body{
-font: 76% arial,sans-serif;
-text-align:center;
+	font: 12px arial,sans-serif;
+	text-align:center;
 }
 
 p{
-margin:0 10px 10px;
+	margin:0 10px 10px;
 }
 
 a{
 	color: #981793;
 }
 
+div#header {
+	background: #333;
+	color: #FFF;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	width: 100%;
+}
+
+div#header img {
+	height: 100px;
+	width: 100px;
+}
+
 div#header h1{
-height:80px;
-line-height:80px;
-margin:0;
-padding-left:10px;
-background: #EEE;
 }
 
 div#navlinks a {
 	padding: 0 5px 0 5px;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 125%;
 }
 
 div#container{
-text-align:left;
+	text-align:left;
 }
 
 div#content p{
-line-height:1.4;
+	line-height:1.4;
 }
 
 div#rightpane{
 }
 
 div#footer{
-background: #333;
-color: #FFF;
+	background: #333;
+	color: #FFF;
 }
 
 div#footer p{
-margin:0;
-padding:5px 10px;
+	margin:0;
+	padding:5px 10px;
 }
 
 div#container{
-width: 90%;
-margin:0 auto;
+	width: 90%;
+	margin:0 auto;
 }
 
 div#content{
-width: 70%;
-float:left;
+	width: 70%;
+	float:left;
+	margin-bottom: 20px;
 }
 
 div#rightpane{
-float:right;
-width:25%;
+	float:right;
+	width:25%;
 }
 
 div#footer{
-clear:both;
-width:100%;
+	clear:both;
+	width:100%;
+	border-radius: 10px;
 }
 

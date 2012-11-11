@@ -21,8 +21,8 @@ class Order_model extends CI_Model {
 			return array('result' => FALSE, 'message' => 'Flight does not exist');
 		} else {
 			$flight = $query->row(0, 'Flight');
-			if($flight->available_seats <= 0)
-				return array('result' => FALSE, 'message' => 'Flight is full');
+			if(($flight->available_seats - $seats) <= 0)
+				return array('result' => FALSE, 'message' => 'Flight is full. ' . $flight->available_seats . ' seats are available.');
 		}
 		
 		// Flight must not have already departed
@@ -39,14 +39,15 @@ class Order_model extends CI_Model {
 			'time' => $tm,
 			'status' => 'COMPLETED',
 			'amount_paid' => $paid,
-			'flight_id' => $flight_id);
+			'flight_id' => $flight_id,
+			'seats' => $seats);
 		$this->db->insert('orders', $od);
 		if($this->db->affected_rows() != 1)
 			return array('result' => FALSE, 'message' => 'Could not insert order into the database');
 		$order_id = $this->db->insert_id();
 		
 		// Decrement the number of seats on the flight by 1
-		$flight->available_seats--;
+		$flight->available_seats = $flight->available_seats - $seats;
 		$this->db->where('flight_pk', $flight->flight_pk);
 		$this->db->update('flights', array('available_seats' => $flight->available_seats));
 		
