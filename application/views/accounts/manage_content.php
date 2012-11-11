@@ -6,7 +6,7 @@
 	</ul>
 	<div id="order-tab">
 	<table>
-	<?php foreach($orders as $order) { ?>
+	<?php foreach($orders as $order) { // Transform this into an expanded accordion with all orders ?>
 		<tr><td><?=$order->order_pk?></td></tr>
 	<?php } ?>
 	</table>

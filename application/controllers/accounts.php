@@ -18,9 +18,9 @@ class Accounts extends CI_Controller
 		// If logged in, redirect to the accounts preferences
 		// If the account is not logged in, open up the login page
 		if ($this->Account_model->isLoggedIn()) {
-			redirect('accounts/manage', 'location');
+			redirect('accounts/manage');
 		} else {
-			redirect('accounts/showLogin', 'location');
+			redirect('accounts/showLogin');
 		}
 	}
 	
@@ -29,7 +29,7 @@ class Accounts extends CI_Controller
 	 */
 	function register() {
 		// If the account is already logged in and somehow ends up here, forward them to their profile
-		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage', 'location');
+		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage');
 		
 		$this->load->library('form_validation');
 		
@@ -46,7 +46,7 @@ class Accounts extends CI_Controller
 			
 			if($this->form_validation->run() == FALSE) {
 				$this->session->set_flashdata('error_message', validation_errors());
-				redirect('accounts/showLogin', 'location');
+				redirect('accounts/showLogin');
 			} else {
 				// Add account to the database
 				$data = array(
@@ -61,7 +61,7 @@ class Accounts extends CI_Controller
 					// Log the account in and redirect to the management page
 					if($this->Account_model->doAccountLogin($data['email'],  $data['password'])) {
 						$this->session->set_flashdata('status_message', 'Welcome to 360-air.com!');
-						redirect('accounts/manage', 'location');
+						redirect('accounts/manage');
 					}
 				}
 			}
@@ -70,7 +70,7 @@ class Accounts extends CI_Controller
 		}
 		
 		// Send them to the login/register page:
-		redirect('accounts/showLogin', 'location');
+		redirect('accounts/showLogin');
 	}
 	
 	/**
@@ -79,7 +79,7 @@ class Accounts extends CI_Controller
 	 */
 	function showLogin() {
 		// If the account is already logged in and somehow ends up here, forward them to their profile
-		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage', 'location');
+		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage');
 	
 		// Load the main page template
 		$page_data['nocache'] = true;
@@ -94,7 +94,7 @@ class Accounts extends CI_Controller
 	// Login process function
 	function login() {
 		if(!$this->input->post('login'))
-			redirect('accounts/showLogin', 'location');
+			redirect('accounts/showLogin');
 			
 		$this->load->library('form_validation');
 	
@@ -123,10 +123,10 @@ class Accounts extends CI_Controller
 		}
 
 		if($result) {
-			redirect('accounts/manage', 'location');
+			redirect('accounts/manage');
 		} else {
 			$this->session->set_flashdata('error_message', $error_msg);
-			redirect('accounts/showLogin', 'location');
+			redirect('accounts/showLogin');
 		}
 	}
 	
@@ -136,7 +136,7 @@ class Accounts extends CI_Controller
 	function logout() {
 		// Destroy the session then redirect
 		$this->Account_model->doAccountLogout();
-		redirect('', 'location');
+		redirect('');
 	}
 	
 	/**
@@ -194,7 +194,7 @@ class Accounts extends CI_Controller
 		}
 		
 		// Send back to the account management page no matter what
-		redirect('accounts/manage', 'location');
+		redirect('accounts/manage');
 	}
 	
 	/*
@@ -202,7 +202,7 @@ class Accounts extends CI_Controller
 	 */
 	function resetpw() {
 		// If the account is already logged in and somehow ends up here, forward them to their profile
-		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage', 'location');
+		if ($this->Account_model->isLoggedIn()) redirect('accounts/manage');
 		
 		$this->load->library('form_validation');
 		

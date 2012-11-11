@@ -10,9 +10,10 @@ class Order_model extends CI_Model {
 	 * 
 	 * @param $account_id
 	 * @param $flight_id
+	 * @param $seats Number of seats to order
 	 * @return Array with result (boolean: True if successful) and message (string) fields
 	 */
-	function placeOrder($account_id, $flight_id) {
+	function placeOrder($account_id, $flight_id, $seats) {
 		// Ensure flight still has an adequate number of seats
 		$qf = $this->db->get_where('flights', array('flight_pk' => $flight_id), 1, 0);
 		$flight = NULL;
@@ -24,43 +25,70 @@ class Order_model extends CI_Model {
 				return array('result' => FALSE, 'message' => 'Flight is full');
 		}
 		
+		// Flight must not have already departed
+		if($flight->depart_time < now())
+			return array('result' => FALSE, 'message' => 'Flight has already departed');
+			
+		// Calculate final amount paid
+		$paid = $flight->ticket_price * $seats;
+		
 		// Insert order in table
 		$tm = now();
 		$od = array(
 			'account_id' => $account_id,
 			'time' => $tm,
 			'status' => 'COMPLETED',
-			'amount_paid' => $flight->ticket_price,
+			'amount_paid' => $paid,
 			'flight_id' => $flight_id);
 		$this->db->insert('orders', $od);
 		if($this->db->affected_rows() != 1)
 			return array('result' => FALSE, 'message' => 'Could not insert order into the database');
+		$order_id = $this->db->insert_id();
 		
 		// Decrement the number of seats on the flight by 1
 		$flight->available_seats--;
 		$this->db->where('flight_pk', $flight->flight_pk);
 		$this->db->update('flights', array('available_seats' => $flight->available_seats));
 		
-		return array('result' => TRUE, 'message' => 'Order complete');
+		return array('result' => TRUE, 'order_id' => $order_id);
+	}
+	
+	/*
+	 * Checks if the account has a COMPLETED order for a particular flight ID
+	 *
+	 * @param $account_id ID of the account to check against
+	 * @param $flight_id ID of the flight
+	 * @reutrn TRUE if the account_id and flight_id exist in a COMPLETED order. FALSE if otherwise
+	 */
+	function hasOrder($account_id, $flight_id) {
+		$this->db->where('account_id', $account_id);
+		$this->db->where('flight_id', $flight_id);
+		$this->db->where('status', 'COMPLETED');
+		$this->db->from('orders');
+		
+		if($this->db->count_all_results() == 0)
+			return FALSE;
+		
+		return TRUE;
 	}
 	
 	/*
 	 * Attempts to cancel a order
 	 *
-	 * @param $order_id ID of the order to cancel
 	 * @param $account_id ID of the account canceling the order (user or staff)
+	 * @param $order_id ID of the order to cancel
 	 * @return TRUE if successful. FALSE if otherwise
 	 */
-	function cancelOrder($order_id, $account_id) {		
-		// Get the order
-		$qo = $this->db->get_where('orders', array('order_pk' => $order_id), 1, 0);
+	function cancelOrder($account_id, $order_id) {		
+		// Get the order. Must be in a COMPELTED state
+		$qo = $this->db->get_where('orders', array('order_pk' => $order_id, 'status' => 'COMPLETED'), 1, 0);
 		if($qo->num_rows() == 0)
 			return FALSE;
-		$order = $qo->row()->flight_id;
+		$order = $qo->row();
 		
 		// Ensure the account attempting to cancel is the user that placed the order or is an admin with proper access
 		if($order->account_id != $account_id) {
-			if(!accountHasPermission($account_id, 'admin_orders'))
+			if(!accountHasPermission($account_id, 'ADMIN'))
 				return FALSE;
 		}
 		
@@ -71,6 +99,7 @@ class Order_model extends CI_Model {
 			return FALSE;
 		$flight = $qf->row(0, 'Flight');
 		
+		// Flight must not have left
 		if($qf->depart_time < now())
 			return FALSE;
 		
