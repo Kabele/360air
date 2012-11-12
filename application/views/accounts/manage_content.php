@@ -6,7 +6,7 @@
 	</ul>
 	<div id="order-tab">
 		<span style="font-weight: bold">History</span><br /><br />
-		<table border="0" cellspacing="1" cellpadding="2" style="width: 100%; padding:0; margin:0; ">
+		<table id="history_table" class="tablesorter">
 		<thead>
 			<tr>
 				<th>Order #</th>

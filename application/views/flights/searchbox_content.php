@@ -3,11 +3,11 @@
 <?php $this->load->helper('form'); ?>
 <?php echo form_open('flights/search'); ?>
 
-<table width="900"  border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table border="0" cellspacing="1" cellpadding="2" style="width: 100%; padding:0; margin:0; ">
 <tbody>
 
 <tr>
-<td width="100%" colSpan="4" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+<td colSpan="4" style="padding:0; margin:0;">
 </td>
 </tr>
 
@@ -51,7 +51,7 @@
 
 </table>
 
-<table width="900" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table border="0" cellspacing="1" cellpadding="2" style="width: 100%; padding:0; margin:0; ">
 <tbody>
 <tr>
 <td>&nbsp;<b>Departure Date:</b></td>
@@ -84,10 +84,10 @@ To: <input type="text" size="20" name="arrival_date_end_picker" id="arrival_date
 				
 </table>
 
-<table width="900" border="0" bgcolor="#FFFFFF" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
+<table border="0" cellspacing="1" cellpadding="2" style="padding:0; margin:0; ">
 <tbody>
 <tr>
-<td width="100%" colSpan="9" style="padding:0; margin:0; " height="100%" bgcolor="#FFFFFF">
+<td colSpan="9" style="padding:0; margin:0; ">
 </tr>
 <tr>
 <td>Adults (12+)</td>
