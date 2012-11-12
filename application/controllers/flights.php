@@ -13,7 +13,7 @@ class Flights extends CI_Controller
 	}
 
 	public function index() {
-		echo 'flights index';
+		redirect('/flights/search');
 	}
 	
 	public function search() {
@@ -24,20 +24,38 @@ class Flights extends CI_Controller
 	
 		// Get search data if it was posted
 		if($this->input->post('search_submit')) {
-			$from = $this->input->post('from');
-			$to = $this->input->post('to');
-			$classType = $this->input->post('flight_class');
-			$departStart = $this->input->post('depart_date_start');
-			$departEnd = $this->input->post('depart_date_end');
-			$arriveStart = $this->input->post('arrival_date_start');
-			$arriveEnd = $this->input->post('arrival_date_end');
-			$passengers = $this->input->post('passenger_adult');
-			$passengers += $this->input->post('passenger_children');
-			$passengers += $this->input->post('passenger_infant');
-			$isDomestic = $this->input->post('is_domestic');
 			
-			//$airports['airports'] = $this->Flight_model->getAirports($isDomestic);
-			$data['search_results'] = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers);
+				$from = $this->input->post('from');
+				$to = $this->input->post('to');
+				$classType = $this->input->post('flight_class');
+				$passengers = $this->input->post('passenger_adult');
+				$passengers += $this->input->post('passenger_children');
+				$passengers += $this->input->post('passenger_infant');
+				$isDomestic = $this->input->post('is_domestic');
+				
+				if($this->input->post('depart_date_start_picker'))
+					$departStart = (int)$this->input->post('depart_date_start');
+				else 
+					$departStart = NULL;
+				
+				if($this->input->post('depart_date_end_picker'))
+					$departEnd = (int)$this->input->post('depart_date_end');
+				else 
+					$departEnd = NULL;
+				
+				if($this->input->post('arrival_date_start_picker'))
+					$arriveStart = (int)$this->input->post('arrival_date_start');
+				else
+					$arriveStart = NULL;
+				
+				if($this->input->post('arrival_date_end_picker'))
+					$arriveEnd = (int)$this->input->post('arrival_date_end');
+				else
+					$arriveEnd = NULL;
+
+				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers);
+				$data['search_results'] = $result['flights'];
+				$data['dbg'] = $result['query'];
 		}
 	
 		//Load template components (all are optional)

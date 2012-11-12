@@ -3,7 +3,7 @@
 <?php echo form_open('admin/searchFlight'); ?>
 Flight ID
 <input type="text" size="20" name="flight_id" id="flight_id" value="<?php if($flight != NULL) echo $flight->flight_pk; else echo set_value('flight_id');?>">
-<?php echo form_submit('search_flight', 'Search');?>
+<?php echo form_submit('search_flight', 'Search', 'class="button"');?>
 
 <?php echo form_close(); ?>
 
@@ -75,6 +75,6 @@ Flight ID
 Reason: <br />
 <textarea name="reason" id="reason"><?php echo set_value('reason')?></textarea>
 </div>
-
-<?php echo form_submit('crud_flight', 'Submit'); ?>
+<input type="checkbox" id="crud_confirm">Confirm Values<br />
+<?php echo form_submit('crud_flight', 'Submit', 'id="crud_flight"'); ?>
 <?php echo form_close(); ?>

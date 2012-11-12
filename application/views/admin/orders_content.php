@@ -13,7 +13,7 @@
 
 </tbody>
 </table>
-<?php echo form_submit('list_orders', 'Search'); ?><?php echo form_submit('search_booking', 'Modify '); ?>
+<?php echo form_submit('list_orders', 'Search', 'class="button"'); ?><?php echo form_submit('search_booking', 'Modify ', 'class="button"'); ?>
 <?php echo form_close(); ?>
 </div>
 
@@ -54,7 +54,7 @@
 	<td><?php echo $modifiable_order->order_pk; ?><input type="hidden" name="order_id" value="<?php echo $modifiable_order->order_pk; ?>" /></td>
 	<td><?php echo unix_to_human($modifiable_order->time);?></td>
 	<td><?php echo $modifiable_order->status; ?></td>
-	<td><input type="text" size="3" name="booked_seats" id="booked_seats" value="<?php //echo $modifiable_order->booked_seats; ?>" /></td>
+	<td><input type="text" size="3" name="booked_seats" id="booked_seats" value="<?php echo $modifiable_order->seats; ?>" /></td>
 	<td><input type="text" name="amount_paid" id="amount_paid" value="<?php echo $modifiable_order->amount_paid;?>"  /></td>
 	<td><?php echo $modifiable_order->flight_id; ?></td></tr>	
 	</tbody>
@@ -62,7 +62,8 @@
 	Suggested price: <span id="suggested_price"><?php echo $modifiable_order->amount_paid; ?></span><br />
 	Reason: <br />
 	<textarea name="reason" id="reason"><?php echo set_value('reason')?></textarea><br />
-	<?php echo form_submit('modify_order', 'Update'); ?>
+	<input type="checkbox" id="book_confirm">Confirm Values<br />
+	<?php echo form_submit('modify_order', 'Update', 'id="modify_order"'); ?>
 	<?php echo form_close(); ?>
 <?} ?>
 </div>

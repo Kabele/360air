@@ -40,7 +40,11 @@ class Account_model extends CI_Model
     	// Fill in the session data
 		$this->session->set_userdata('logged_in', true);
 		$this->session->set_userdata('email', $row->email);
-		$this->session->set_userdata('account_id', $row->account_pk);
+		$this->session->set_userdata('account_id', $row->account_pk);	
+		if($this->accountHasPermission($row->account_pk, 'ADMIN'))
+			$this->session->set_userdata('is_admin', true);
+		else
+			$this->session->set_userdata('is_admin', false);
         
         return true;
     }

@@ -1,90 +1,31 @@
 <?=$this->load->view('flights/searchbox_content', NULL, true)?>
 
 <h2>Search Results</h2>
-<?php if(isset($search_results)) var_dump($search_results); ?>
+<?php if(isset($search_results) && $search_results != NULL) { ?>
+
+	<?php //var_dump($search_results); ?>
+	
+	<table><thead>
+	<tr><th>Flight #</th><th>Price</th><th>From</th><th>To</th><th>Departs</th><th>Arrives</th><th>&nbsp;</th></tr>
+	</thead>
+	<tbody>
 		
-<table>
-<tbody>
+	<?php foreach($search_results as $flight) { ?>
+		<tr>
+		<td><?=$flight->flight_pk; ?></td>
+		<td>$<?=$flight->ticket_price; ?></td>
+		<td><?=$flight->depart_airport_code; ?></td>
+		<td><?=$flight->arrival_airport_code; ?></td>
+		<td><?=mdate('%m/%d/%y, %H:%i', $flight->depart_time)?></td>
+		<td><?=mdate('%m/%d/%y, %H:%i', $flight->arrival_time)?></td>
+		<td><a href="<?=site_url('flights/view/'.$flight->flight_pk)?>"><span class="ui-icon ui-icon-arrowthick-1-e"></span></a></td>
+		</tr>	
+		
+	<?php }?>
+	</tbody>
+	</table>
+<?php } else { ?>
+	No results found
+<?php } ?>
 
-<tr align="center">
-<td colspan="6"><u><b><h3>Flight Results:</h3></b></u></td>
-</tr>
-
-<tr><td>&nbsp</td></tr>
-
-
-<tr align="left">
-<td>From:</td>
-<td>&nbsp</td>
-<td>&nbspon</td>
-<td>&nbsp</td>
-<td>&nbspat</td>
-<td>&nbsp</td>
-</tr>
-
-<tr align="left">
-<td>To:</td>
-<td>&nbsp</td>
-<td>&nbspon</td>
-<td>&nbsp</td>
-<td>&nbspat</td>
-<td>&nbsp</td>
-</tr>
-
-<tr><td>&nbsp</td></tr>
-
-
-<tr>
-<td>(Passenger number)</td>
-<td>(one way, round trip)</td>
-</tr>
-
-</tbody>
-</table>
-
-
-<table>
-<tbody>
-<hr>
-
-<tr><td>&nbsp</td></tr>
-
-
-<tr align="left">
-<td>(From)</td>
-<td><ul id="icons" class="ui-widget ui-helper-clearfix"><span class="ui-icon ui-icon-arrow-1-e"></span></td>
-<td>(to)</td>
-<td>(flight number)</td>
-<td>$ (cost)</td>
-<td>&nbsp</td>
-</tr>
-
-<tr align="left">
-<td>Departs:</td>
-<td>(date)</td>
-<td>(time)</td>
-<td>&nbsp</td>
-<td>&nbsp</td>
-<td>(one way, round trip)</td>
-</tr>
-
-<tr align="left">
-<td>Arrives:</td>
-<td>(date)</td>
-<td>(time)</td>
-</tr>
-
-<tr><td>&nbsp</td></tr>
-
-
-<tr>
-
-<td colspan="6"><center>
-<input style="border:3px outset #FFF; FONT-SIZE: 10pt;  COLOR: #000; BACKGROUND-COLOR: #8F8B8B" type="submit" value="Book Now!" name="sbutton">
-</td>
-
-
-<tr><td>&nbsp</td></tr>
-
-</tbody>
-</table>
+<?php echo 'DEBUG ' . $dbg; ?>

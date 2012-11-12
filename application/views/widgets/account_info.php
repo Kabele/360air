@@ -10,3 +10,17 @@ $(function() {
 });
 </script>
 </div>
+
+<div class="ui-widget-content ui-corner-all">
+<?php if($this->session->userdata('is_admin') == true) {?>
+<h2>Admin Pages</h2>
+	<?=anchor('admin', 'Admin Flights', array('id' => 'admin_btn'))?>
+	<?=anchor('admin/orders', 'Admin Orders', array('id' =>'admin_orders_btn')) ?>
+	<script>
+	$(function() {
+		$("#admin_btn").button();
+		$("#admin_orders_btn").button();
+	});
+	</script>
+<?php } ?>
+</div>

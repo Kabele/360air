@@ -62,9 +62,17 @@ class Orders extends CI_Controller
 	public function cancel($order_id) {
 		// User must be logged initiate this action
 		$this->Account_model->checkLogin();
+		
+		// Get order object and ensure its for this account
+		$order = $this->Order_model->getOrder($order_id);
+		if($order == NULL || ($order->account_id != $this->session->userdata('account_id'))) {
+			$this->session->set_flashdata('error_message', 'Order is not valid or does not belong to this account');
+			redirect('accounts/manage');
+			return;
+		}
 	
 		// Attempt to cancel an order on this account
-		$ret = $this->Order_model->cancelOrder($this->session->userdata('account_id'), $order_id);
+		$ret = $this->Order_model->cancelOrder($this->session->userdata('account_id'), $order_id, 'User canceled');
 		if($ret['result']) {
 			$this->session->set_flashdata('status_message', 'Order has been canceled successfully');
 			redirect('orders/view/'.$order_id);

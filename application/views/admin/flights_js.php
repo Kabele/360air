@@ -26,8 +26,9 @@ $(function() {
         numberOfMonths: 1,
     });
 	
-	$( "#button" ).button();
-	//$( "#radioset" ).buttonset();
+	$( ".button" ).each(function() {
+		$(this).button();
+	});
 	
 	$("#add_flight").click(function() {
 		$("#comment").hide();
@@ -38,28 +39,13 @@ $(function() {
 	$("#delete_flight").click(function() {
 		$("#comment").show();
 	});
-	
-	$( "#tabs" ).tabs();
-	
 
-	
-	$( "#dialog" ).dialog({
-		autoOpen: false,
-		width: 400,
-		buttons: [
-			{
-				text: "Ok",
-				click: function() {
-					$( this ).dialog( "close" );
-				}
-			},
-			{
-				text: "Cancel",
-				click: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		]
+	$("#crud_flight").button().attr('disabled', true);
+
+	$("#crud_confirm").change(function() {
+        if ($(this).is(':checked')) {
+        	$("#crud_flight").button().attr('disabled', false).removeClass( 'ui-state-disabled' );
+        }
 	});
 
 	// Link to open the dialog
@@ -68,24 +54,6 @@ $(function() {
 		event.preventDefault();
 	});
 	
-
-	
-	$( "#datepicker" ).datepicker({
-		inline: true
-	});
-	
-
-	
-	$( "#slider" ).slider({
-		range: true,
-		values: [ 17, 67 ]
-	});
-	
-
-	
-	$( "#progressbar" ).progressbar({
-		value: 20
-	});
 	
 
 	// Hover states on the static widgets

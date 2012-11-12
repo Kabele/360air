@@ -4,7 +4,4 @@ if($this->Account_model->isLoggedIn()) {
 } else {
 	echo $this->load->view('widgets/login', NULL, true);
 }
-echo anchor("/admin", "Admin Flights", "");
-echo '<br>';
-echo anchor("/admin/orders", "Admin Orders", "");
 ?>

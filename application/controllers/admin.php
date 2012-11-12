@@ -116,6 +116,9 @@ class Admin extends CI_Controller
 				// Adding a flight
 				if($oper == 'add_flight') {
 					
+					// Use the total seats as avaialble seats
+					$flt->available_seats = $flt->total_seats;
+					
 					$result = $this->Flight_model->addFlight($flt);			
 					if($result != -1) {
 						$flt->flight_pk = $result;
@@ -230,7 +233,7 @@ class Admin extends CI_Controller
 				if($email != NULL) {
 					// See if the email matches an account already searched
 					if($account != NULL) {
-						if($account->email != $email) {
+						if(strcasecmp($account->email,$email) != 0) {
 							$data['error_message'] = 'Criteria do not match';
 							$continue = FALSE;
 						} else {
@@ -281,11 +284,19 @@ class Admin extends CI_Controller
 					} else {
 						// Search for an order with the flightId
 						$flag = false;
-						foreach($orders as $ord) {
+						foreach($orders as $ord) {			
 							if($ord->flight_id == $flightId) {
-								$modifiable_order = $ord;
-								$flag = true;
+								if(isset($order) && $order != NULL) {
+									if($ord->order_pk == $order->order_pk) {
+										$modifiable_order = $ord;
+										$flag = true;
+									}
+								} else {
+									$modifiable_order = $ord;
+									$flag = true;
+								}
 							}
+							
 						}
 						if($flag) {
 							$criteriaCount++;
@@ -313,6 +324,10 @@ class Admin extends CI_Controller
 						
 				} else if($this->input->post('search_booking'))	{
 					
+					// Get the orders for this account (for convenience)
+					$orders = $this->Order_model->listOrders($account->account_pk);
+					$data['customer_orders'] = $orders;
+					
 					if($continue && $criteriaCount < 3) {
 						$data['error_message'] = 'Must enter at least 3 search criteria';
 						$continue = FALSE;
@@ -325,10 +340,7 @@ class Admin extends CI_Controller
 						// Get the flight info for this order so it can be used to suggest a price
 						$flt_data = $this->Flight_model->getFlight($modifiable_order->flight_id);
 						$data['modifiable_order_flight_data'] = $flt_data;
-						
-						// Get the orders for this account (for convenience)
-						$orders = $this->Order_model->listOrders($account->account_pk);
-						$data['customer_orders'] = $orders;
+
 					}
 					
 				}
@@ -353,12 +365,15 @@ class Admin extends CI_Controller
 		
 		if($this->input->post('modify_order')) {
 			
-			$this->form_validation->set_rules('order_id', 'Order ID', 'required|trim|numeric|prep_for_form');
-			$this->form_validation->set_rules('amount_paid', 'Amount Paid', 'required|numeric|prep_for_form');
-			$this->form_validation->set_rules('reason', 'Reason', 'required|prep_for_form');
-			$this->form_validation->set_rules('booked_seats', 'Booked Seats', 'required|numeric');
-			
 			$oper = $this->input->post('operation');
+			
+			$this->form_validation->set_rules('order_id', 'Order ID', 'required|trim|numeric|prep_for_form');
+			$this->form_validation->set_rules('reason', 'Reason', 'required|prep_for_form');
+			if($oper == 'update_order') {
+				$this->form_validation->set_rules('amount_paid', 'Amount Paid', 'required|numeric|prep_for_form');
+				$this->form_validation->set_rules('booked_seats', 'Booked Seats', 'required|numeric');
+			}
+			
 			
 			if($this->form_validation->run() == FALSE) {
 				$data['error_message'] = validation_errors();
@@ -370,9 +385,19 @@ class Admin extends CI_Controller
 				$paid = $this->input->post('amount_paid');
 				
 				if($oper == 'cancel_order') {
-					
+					$result = $this->Order_model->cancelOrder($this->getUserId(), $order_id, $reason);
+					if($result['result'] == FALSE) {
+						$data['error_message'] = $result->message;
+					} else {
+						$data['status_message'] = 'Order number ' . $order_id . ' successfully canceled';
+					}
 				} else if($oper == 'update_order') {
-					
+					$result = $this->Order_model->updateOrder($this->getUserId(), $order_id, $reason, $seats, $paid);
+					if($result['result'] == FALSE) {
+						$data['error_message'] = $result->message;
+					} else {
+						$data['status_message'] = 'Order number ' . $order_id . ' successfully updated';
+					}
 				} else {
 					// Invalid operation
 				}

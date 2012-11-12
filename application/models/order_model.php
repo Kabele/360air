@@ -77,20 +77,15 @@ class Order_model extends CI_Model {
 	 *
 	 * @param $account_id ID of the account canceling the order (user or staff)
 	 * @param $order_id ID of the order to cancel
+	 * @param $reason The comment to be entered for the order modification
 	 * @return TRUE if successful. FALSE if otherwise
 	 */
-	function cancelOrder($account_id, $order_id) {		
+	function cancelOrder($account_id, $order_id, $reason) {		
 		// Get the order. Must be in a COMPELTED state
 		$qo = $this->db->get_where('orders', array('order_pk' => $order_id, 'status' => 'COMPLETED'), 1, 0);
 		if($qo->num_rows() == 0)
 			return array('result' => FALSE, 'message' => 'A COMPLETED order was not found');
 		$order = $qo->row();
-		
-		// Ensure the account attempting to cancel is the user that placed the order or is an admin with proper access
-		if($order->account_id != $account_id) {
-			if(!accountHasPermission($account_id, 'ADMIN'))
-				return array('result' => FALSE, 'message' => 'You do not have permission to cancel this order');
-		}
 		
 		// Get the flight and make sure it hasn't already passed
 		// Otherwise it doesn't make sense to cancel an order for a departed flight
@@ -110,13 +105,63 @@ class Order_model extends CI_Model {
 		// Insert an order modification
 		$om = array(
 			'time' => now(),
-			'comment' => 'CANCELED',
+			'comment' => $reason,
 			'order_id' => $order_id,
 			'account_id' => $account_id);
 		$this->db->insert('order_modifications', $om);
 		
 		// Increment the number of seats on the flight by the number of seats purchased
 		$flight->available_seats = $flight->available_seats + $order->seats;
+		$this->db->where('flight_pk', $flight->flight_pk);
+		$this->db->update('flights', array('available_seats' => $flight->available_seats));
+		
+		return array('result' => TRUE);
+	}
+	
+	/*
+	 * Attempts to update an order
+	 *
+	 * @param $account_id ID of the account canceling the order (user or staff)
+	 * @param $order_id ID of the order to cancel
+	 * @param $reason The comment to be entered for the order modification
+	 * @param $seats The number of seats the order should have after the update
+	 * @param $paid The new amount paid for the order
+	 * @return TRUE if successful. FALSE if otherwise
+	 */
+	function updateOrder($account_id, $order_id, $reason, $seats, $paid) {		
+		// Get the order. Must be in a COMPELTED state
+		$qo = $this->db->get_where('orders', array('order_pk' => $order_id, 'status' => 'COMPLETED'), 1, 0);
+		if($qo->num_rows() == 0)
+			return array('result' => FALSE, 'message' => 'A COMPLETED order was not found');
+		$order = $qo->row();
+		
+		// Get the flight and make sure it hasn't already passed
+		// Otherwise it doesn't make sense to cancel an order for a departed flight
+		$qf = $this->db->get_where('flights', array('flight_pk' => $order->flight_id), 1, 0);
+		if($qf->num_rows() == 0)
+			return array('result' => FALSE, 'message' => 'Flight does not exist');
+		$flight = $qf->row(0, 'Flight');
+		
+		// Make sure the flight has enough seats to accomdate the change
+		$seatDifference = $order->seats - $seats;
+		if($flight->available_seats < $seatDifference) {
+			return array('result' => FALSE, 'message' => 'Flight does not have enough seats');
+		}
+		
+		// Update the number of seats and amount paid
+		$this->db->where('order_pk', $order_id);
+		$this->db->update('orders', array('amount_paid' => $paid, 'seats' => $seats));
+		
+		// Insert an order modification
+		$om = array(
+			'time' => now(),
+			'comment' => $reason,
+			'order_id' => $order_id,
+			'account_id' => $account_id);
+		$this->db->insert('order_modifications', $om);
+		
+		// Update the number of seats available on the flight by the seatDifference
+		$flight->available_seats = $flight->available_seats + $seatDifference;
 		$this->db->where('flight_pk', $flight->flight_pk);
 		$this->db->update('flights', array('available_seats' => $flight->available_seats));
 		

@@ -144,7 +144,7 @@ class Flight_model extends CI_Model {
 		
 		$this->db->select('flights.*');
 		
-		$flights = $this->db->order_by('flight_pk', 'desc')->limit(5)->get('flights')->result();
+		$flights = $this->db->order_by('flight_pk', 'desc')->where('depart_time >=', now())->limit(10)->get('flights')->result();
 		return $flights;
 	}
 	
@@ -155,21 +155,17 @@ class Flight_model extends CI_Model {
 	 * @return a list of flight data matching the search criteria
 	 */
 	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $availableSeats) {
+		$this->db->from('flights');
+		
 		// Add filter parameters depending on what was passed
-		// Filter by depart airport
-		if($departAirport != NULL) {
-			// Look up the airport id using the code provided			
-			$this->db->join('airports as d_airport', 'flights.depart_airport_id = d_airport.airport_pk');
-			$this->db->where('d_airport.code',$departAirport);
+		if($classType != NULL) {
+			$this->db->where('flights.class_type',$classType);
 		}
-		// Filter by arrival airport
-		if($arrivalAirport != NULL) {
-			// Look up the airport id using the code provided			
-			$this->db->join('airports as a_airport', 'flights.arrival_airport_id = a_airport.airport_pk');
-			$this->db->where('a_airport.code',$arrivalAirport);
+		if($availableSeats != NULL) {
+			$this->db->where('flights.available_seats >=', $availableSeats);
 		}
 		if($departTimeStart != NULL) {
-			$this->db->where('flights.depart_time >=', $departTimeStart);
+			$this->db->where('depart_time >', $departTimeStart);
 		}
 		if($departTimeEnd != NULL) {
 			$this->db->where('flights.depart_time <=', $departTimeEnd);
@@ -180,11 +176,18 @@ class Flight_model extends CI_Model {
 		if($arriveTimeEnd != NULL) {
 			$this->db->where('flights.arrival_time <=', $arriveTimeEnd);
 		}
-		if($classType != NULL) {
-			$this->db->where('flights.class_type',$classType);
+		
+		// Filter by depart airport
+		if($departAirport != NULL) {
+			// Look up the airport id using the code provided			
+			$this->db->join('airports as d_airport', 'flights.depart_airport_id = d_airport.airport_pk');
+			$this->db->like('d_airport.code',$departAirport, 'none');
 		}
-		if($availableSeats != NULL) {
-			$this->db->where('flights.available_seats >=', $availableSeats);
+		// Filter by arrival airport
+		if($arrivalAirport != NULL) {
+			// Look up the airport id using the code provided			
+			$this->db->join('airports as a_airport', 'flights.arrival_airport_id = a_airport.airport_pk');
+			$this->db->like('a_airport.code',$arrivalAirport, 'none');
 		}
 		
 		// Populate with the airport code and name for depart and arrival
@@ -196,9 +199,9 @@ class Flight_model extends CI_Model {
 		
 		$this->db->select('flights.*');
 		
-		$flights = $this->db->get('flights');
+		$flights = $this->db->get();
 		
-		return $flights->result();
+		return array('flights' => $flights->result(), 'query' => $this->db->last_query());
 	}
 	
 	/**

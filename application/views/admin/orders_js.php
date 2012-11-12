@@ -33,6 +33,7 @@ $(function() {
 		source: availableTags
 	});
 
+	<? if(isset($modifiable_order)) { ?>
 
 	// Click events for the radio buttons
 	$("#cancel_order").click(function() {
@@ -50,6 +51,10 @@ $(function() {
 		$("#booked_seats").removeAttr('disabled');
 		$("#amount_paid").removeAttr('disabled');
 		$("#flight_id").removeAttr('disabled');
+
+		// Change the booked seats and amount paid back to their original value
+		$("#booked_seats").val(<? echo $modifiable_order->seats; ?>);
+		$("#amount_paid").val(<? echo $modifiable_order->amount_paid; ?>);
 	});
 
 	// When the number of seats changes, change the suggested price
@@ -63,58 +68,18 @@ $(function() {
 		return price;
 	}
 
-	
-	$( "#button" ).button();
-	//$( "#radioset" ).buttonset();
-	
+	<?php } ?>
 
-	
-	$( "#tabs" ).tabs();
-	
-
-	
-	$( "#dialog" ).dialog({
-		autoOpen: false,
-		width: 400,
-		buttons: [
-			{
-				text: "Ok",
-				click: function() {
-					$( this ).dialog( "close" );
-				}
-			},
-			{
-				text: "Cancel",
-				click: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		]
+	$( ".button" ).each(function() {
+		$(this).button();
 	});
 
-	// Link to open the dialog
-	$( "#dialog-link" ).click(function( event ) {
-		$( "#dialog" ).dialog( "open" );
-		event.preventDefault();
-	});
-	
+	$("#modify_order").button().attr('disabled', true);
 
-	
-	$( "#datepicker" ).datepicker({
-		inline: true
-	});
-	
-
-	
-	$( "#slider" ).slider({
-		range: true,
-		values: [ 17, 67 ]
-	});
-	
-
-	
-	$( "#progressbar" ).progressbar({
-		value: 20
+	$("#book_confirm").change(function() {
+        if ($(this).is(':checked')) {
+        	$("#modify_order").button().attr('disabled', false).removeClass( 'ui-state-disabled' );
+        }
 	});
 	
 
