@@ -19,6 +19,7 @@
 <script src="<?=base_url('js/jquery-1.8.2.js')?>"></script>
 <script src="<?=base_url('js/jquery-ui-1.9.0.custom.js')?>"></script>
 <script src="<?=base_url('js/jquery-ui-timepicker-addon.js')?>"></script>
+<script src="<?=base_url('js/jquery.tablesorter.js')?>"></script>
 
 <?php if(isset($js)) echo $js;?>
 
@@ -32,11 +33,11 @@
 	<h1>360-air.com</h1>
 	  
 	<div id="navlinks" align="right">
-		<a href="<?=site_url()?>">Home</a>
-		<a href="<?=site_url('flights')?>">Flights</a>
-		<a href="<?=site_url('news')?>">News</a>
-		<a href="<?=site_url('accounts')?>">Account</a>
-		<a href="<?=site_url('contact')?>">Contact</a>
+		<a href="<?=base_url()?>">Home</a>
+		<a href="<?=base_url('flights')?>">Flights</a>
+		<a href="<?=base_url('news')?>">News</a>
+		<a href="<?=base_url('accounts')?>">Account</a>
+		<a href="<?=base_url('contact')?>">Contact</a>
 	</div>
 </div>
 
