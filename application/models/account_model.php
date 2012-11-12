@@ -201,8 +201,9 @@ class Account_model extends CI_Model
 		$this->db->like('email', $email, 'none');
 		$this->db->limit(1);
 		$account = $this->db->get('accounts');
+
 		
-		if($account->num_rows() > 0)
+		if($account->num_rows() == 1)
 			return $account->row();
 			
 		return NULL;
@@ -220,7 +221,7 @@ class Account_model extends CI_Model
 		$this->db->limit(1);
 		$account = $this->db->get_where('accounts');
 		
-		if($account->num_rows() > 0)
+		if($account->num_rows() == 1)
 			return $account->row();
 			
 		return NULL;
