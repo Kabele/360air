@@ -20,7 +20,7 @@ class Order_model extends CI_Model {
 		if($qf->num_rows() == 0) {
 			return array('result' => FALSE, 'message' => 'Flight does not exist');
 		} else {
-			$flight = $query->row(0, 'Flight');
+			$flight = $qf->row(0, 'Flight');
 			if(($flight->available_seats - $seats) <= 0)
 				return array('result' => FALSE, 'message' => 'Flight is full. ' . $flight->available_seats . ' seats are available.');
 		}
@@ -33,10 +33,9 @@ class Order_model extends CI_Model {
 		$paid = $flight->ticket_price * $seats;
 		
 		// Insert order in table
-		$tm = now();
 		$od = array(
 			'account_id' => $account_id,
-			'time' => $tm,
+			'time' => now(),
 			'status' => 'COMPLETED',
 			'amount_paid' => $paid,
 			'flight_id' => $flight_id,
@@ -46,7 +45,7 @@ class Order_model extends CI_Model {
 			return array('result' => FALSE, 'message' => 'Could not insert order into the database');
 		$order_id = $this->db->insert_id();
 		
-		// Decrement the number of seats on the flight by 1
+		// Decrement the number of seats on the flight by the number of seats purchased
 		$flight->available_seats = $flight->available_seats - $seats;
 		$this->db->where('flight_pk', $flight->flight_pk);
 		$this->db->update('flights', array('available_seats' => $flight->available_seats));
@@ -84,25 +83,25 @@ class Order_model extends CI_Model {
 		// Get the order. Must be in a COMPELTED state
 		$qo = $this->db->get_where('orders', array('order_pk' => $order_id, 'status' => 'COMPLETED'), 1, 0);
 		if($qo->num_rows() == 0)
-			return FALSE;
+			return array('result' => FALSE, 'message' => 'A COMPLETED order was not found');
 		$order = $qo->row();
 		
 		// Ensure the account attempting to cancel is the user that placed the order or is an admin with proper access
 		if($order->account_id != $account_id) {
 			if(!accountHasPermission($account_id, 'ADMIN'))
-				return FALSE;
+				return array('result' => FALSE, 'message' => 'You do not have permission to cancel this order');
 		}
 		
 		// Get the flight and make sure it hasn't already passed
 		// Otherwise it doesn't make sense to cancel an order for a departed flight
 		$qf = $this->db->get_where('flights', array('flight_pk' => $order->flight_id), 1, 0);
 		if($qf->num_rows() == 0)
-			return FALSE;
+			return array('result' => FALSE, 'message' => 'Flight does not exist');
 		$flight = $qf->row(0, 'Flight');
 		
 		// Flight must not have left
-		if($qf->depart_time < now())
-			return FALSE;
+		if($flight->depart_time < now())
+			return array('result' => FALSE, 'message' => 'Flight has already departed');
 		
 		// Update the order to a canceled status
 		$this->db->where('order_pk', $order_id);
@@ -110,18 +109,18 @@ class Order_model extends CI_Model {
 		
 		// Insert an order modification
 		$om = array(
-			'time' => $tm,
-			'comment' => 'Canceled',
+			'time' => now(),
+			'comment' => 'CANCELED',
 			'order_id' => $order_id,
 			'account_id' => $account_id);
 		$this->db->insert('order_modifications', $om);
 		
-		// Increment the number of seats on the flight by 1
-		$flight->available_seats++;
+		// Increment the number of seats on the flight by the number of seats purchased
+		$flight->available_seats = $flight->available_seats + $order->seats;
 		$this->db->where('flight_pk', $flight->flight_pk);
 		$this->db->update('flights', array('available_seats' => $flight->available_seats));
 		
-		return TRUE;
+		return array('result' => TRUE);
 	}
 	
 	/*
