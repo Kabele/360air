@@ -34,22 +34,22 @@ class Flights extends CI_Controller
 				$isDomestic = $this->input->post('is_domestic');
 				
 				if($this->input->post('depart_date_start_picker'))
-					$departStart = (int)$this->input->post('depart_date_start');
+					$departStart = $this->input->post('depart_date_start')/1000;
 				else 
 					$departStart = NULL;
 				
 				if($this->input->post('depart_date_end_picker'))
-					$departEnd = (int)$this->input->post('depart_date_end');
+					$departEnd = $this->input->post('depart_date_end')/1000;
 				else 
 					$departEnd = NULL;
 				
 				if($this->input->post('arrival_date_start_picker'))
-					$arriveStart = (int)$this->input->post('arrival_date_start');
+					$arriveStart = $this->input->post('arrival_date_start')/1000;
 				else
 					$arriveStart = NULL;
 				
 				if($this->input->post('arrival_date_end_picker'))
-					$arriveEnd = (int)$this->input->post('arrival_date_end');
+					$arriveEnd = $this->input->post('arrival_date_end')/1000;
 				else
 					$arriveEnd = NULL;
 

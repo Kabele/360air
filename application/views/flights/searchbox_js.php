@@ -48,6 +48,7 @@ updateAutoComplete($("#is_domestic").val());
 $( "#search_submit" ).button();
 
 $( "#depart_date_start_picker" ).datepicker({
+	defaultDate: new Date(),
 	altField: '#depart_date_start',
 	altFormat: '@',
 	changeMonth: true,
