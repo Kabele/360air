@@ -134,7 +134,7 @@ class Account_model extends CI_Model
 		$account = $this->db->get_where('accounts', array('email' => $email), 1, 0);
 		
 		if($account->num_rows() > 0)
-			return $account->result();
+			return $account->row();
 			
 		return NULL;
 	}
@@ -149,7 +149,7 @@ class Account_model extends CI_Model
 		$account = $this->db->get_where('accounts', array('first_name' => $firstName, 'last_name' => $lastName), 1, 0);
 		
 		if($account->num_rows() > 0)
-			return $account->result();
+			return $account->row();
 			
 		return NULL;
 	}

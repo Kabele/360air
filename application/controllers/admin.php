@@ -192,38 +192,193 @@ class Admin extends CI_Controller
 		$this->load->view('site_main', $page_data);
 	}
 	
-	public function searchOrders() {
+	public function listOrders() {
 		$this->isAdmin();
 		
-		if($this->input->post('search_orders')) {
+		if($this->input->post()) {
 			
-			$firstName = $this->input->post('first_name');
-			$lastName = $this->input->post('last_name');
-			$email = $this->input->post('email');
-			$flightId = $this->input->post('flight_number');
-			$orderId = $this->input->post('booking_number');
+			$this->form_validation->set_rules('first_name', 'First Name', 'trim|prep_for_form');
+			$this->form_validation->set_rules('last_name', 'Last Name', 'trim|prep_for_form');
+			$this->form_validation->set_rules('email', 'Email', 'valid_email|prep_for_form');
+			$this->form_validation->set_rules('flight_number', 'Flight Number', 'numeric');
+			$this->form_validation->set_rules('booking_number', 'Booking Confirmation Number', 'numeric');
 			
-			if($firstName != NULL && $lastName != NULL) {
-				$account = $this->Account_model->getAccountByName($firstName, $lastName);
-			}
+			if($this->form_validation->run() == FALSE) {
+				$data['error_message'] = validation_errors();
+			} else {
 			
-			if($email != NULL) {
-				// Search the account by email
-				$account = $this->Account_model->getAccountByEmail($email);
-			}
 			
-			if($flightId != NULL) {
-				// Get account by searching orders using flight id to narrow results
-			}
-			
-			if($orderId != NULL) {
-				// Search for account by order id
-				$order = $this->Order_model->getOrder($orderId);
-				$account = $this->Account_model->getAccount($order->account_id);
-			}
+				$firstName = $this->input->post('first_name');
+				$lastName = $this->input->post('last_name');
+				$email = $this->input->post('email');
+				$flightId = $this->input->post('flight_number');
+				$orderId = $this->input->post('booking_number');
+				
+				$criteriaCount = 0;
+				$account = NULL;
+				$continue = TRUE;				
+				
+				// Use the name to get the account if available
+				if($firstName != NULL && $lastName != NULL) {
+					// Search for account by name
+					$account = $this->Account_model->getAccountByName($firstName, $lastName);
+					if($account != NULL)
+						$criteriaCount++;
+				}
+				
+				// Use the email to verify the account or get it
+				if($email != NULL) {
+					// See if the email matches an account already searched
+					if($account != NULL) {
+						if($account->email != $email) {
+							$data['error_message'] = 'Criteria do not match';
+							$continue = FALSE;
+						} else {
+							$criteriaCount++;
+						}
+					} else {
+						// Search the account by email
+						$account = $this->Account_model->getAccountByEmail($email);
+						if($account != NULL)
+							$criteriaCount++;
+					}
+				}
+				
+				// User the orderId to verify the account or get it
+				if($continue && $orderId != NULL) {
+					// Search for account by order id
+					$order = $this->Order_model->getOrder($orderId);
+					if($order == NULL) {
+						$data['error_message'] = 'Could not find an order with the given Booking Number';
+						$continue = FALSE;
+					} else {				
+						if($account != NULL) {
+							if($account->account_pk != $order->account_id) {
+								$data['error_message'] = 'Criteria do not match';
+								$continue = FALSE;
+							} else {
+								$criteriaCount++;
+								$modifiable_order = $order;
+							}
+						} else {							
+							$account = $this->Account_model->getAccount($order->account_id);
+							if($account != NULL) {
+								$criteriaCount++;
+								$modifiable_order = $order;
+							}
+						}
+					}
+				}
+				
+				// By this point we should have an account
+				// Check to see if the flightId provided generated any orders with a matching account
+				if($continue && $account != NULL && $flightId != NULL) {
+					// Get the orders associated with the account
+					$orders = $this->Order_model->listOrders($account->account_pk);
+					if($orders == NULL) {
+						$data['error_message'] = 'Could not find an order matching the flight number';
+						$continue = FALSE;
+					} else {
+						// Search for an order with the flightId
+						$flag = false;
+						foreach($orders as $ord) {
+							if($ord->flight_id == $flightId) {
+								$modifiable_order = $ord;
+								$flag = true;
+							}
+						}
+						if($flag) {
+							$criteriaCount++;
+						} else {
+							$data['error_message'] = 'Criteria do not match';
+							$continue = FALSE;
+						}
+					}
+				}
+				
+				if($this->input->post('list_orders')) {
+				
+					if($continue && $criteriaCount < 2) {
+						$data['error_message'] = 'Must enter at least 2 search criteria';
+						$continue = FALSE;
+					}
+				
+					if($continue) {
+						
+						// Get the orders for this account
+						$orders = $this->Order_model->listOrders($account->account_pk);
+						$data['customer_orders'] = $orders;
+						
+					}
+						
+				} else if($this->input->post('search_booking'))	{
+					
+					if($continue && $criteriaCount < 3) {
+						$data['error_message'] = 'Must enter at least 3 search criteria';
+						$continue = FALSE;
+					}
+				
+					if($continue) {						
+						// Set the modifiable order that was found earlier
+						$data['modifiable_order'] = $modifiable_order;		
+
+						// Get the flight info for this order so it can be used to suggest a price
+						$flt_data = $this->Flight_model->getFlight($modifiable_order->flight_id);
+						$data['modifiable_order_flight_data'] = $flt_data;
+						
+						// Get the orders for this account (for convenience)
+						$orders = $this->Order_model->listOrders($account->account_pk);
+						$data['customer_orders'] = $orders;
+					}
+					
+				}
+								
+			}			
 			
 			$data['account'] = $account;
 		
+			// Load template components (all are optional)
+			$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
+			$page_data['js'] = $this->load->view('admin/orders_js', $data, true);
+			$page_data['content'] = $this->load->view('admin/orders_content', $data, true);
+			$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
+			
+			// Send page data to the site_main and have it rendered
+			$this->load->view('site_main', $page_data);
+		}
+	}
+	
+	public function modifyOrder() {
+		$this->isAdmin();
+		
+		if($this->input->post('modify_order')) {
+			
+			$this->form_validation->set_rules('order_id', 'Order ID', 'required|trim|numeric|prep_for_form');
+			$this->form_validation->set_rules('amount_paid', 'Amount Paid', 'required|numeric|prep_for_form');
+			$this->form_validation->set_rules('reason', 'Reason', 'required|prep_for_form');
+			$this->form_validation->set_rules('booked_seats', 'Booked Seats', 'required|numeric');
+			
+			$oper = $this->input->post('operation');
+			
+			if($this->form_validation->run() == FALSE) {
+				$data['error_message'] = validation_errors();
+			} else {
+				
+				$order_id = $this->input->post('order_id');
+				$seats = $this->input->post('booked_seats');
+				$reason = $this->input->post('reason');
+				$paid = $this->input->post('amount_paid');
+				
+				if($oper == 'cancel_order') {
+					
+				} else if($oper == 'update_order') {
+					
+				} else {
+					// Invalid operation
+				}
+				
+			}
+			
 			// Load template components (all are optional)
 			$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
 			$page_data['js'] = $this->load->view('admin/orders_js', NULL, true);
@@ -232,7 +387,9 @@ class Admin extends CI_Controller
 			
 			// Send page data to the site_main and have it rendered
 			$this->load->view('site_main', $page_data);
+			
 		}
+		
 	}
 	
 	public function cancelOrder() {
@@ -265,7 +422,7 @@ class Admin extends CI_Controller
 	/*
 	 * Helper functions
 	 */
-	private function isAdmin() {
+	function isAdmin() {
 		$this->Account_model->checkLogin();
 		$usrdata = $this->session->all_userdata();
 		if($this->Account_model->accountHasPermission($usrdata['account_id'], 'ADMIN')) {
@@ -278,13 +435,13 @@ class Admin extends CI_Controller
 		}
 	}
 	
-	private function getUserId() {
+	function getUserId() {
 		$this->Account_model->checkLogin();
 		$usrdata = $this->session->all_userdata();
 		return $usrdata['account_id'];
 	}
 	
-	private function check_airport_code($code) {
+	function check_airport_code($code) {
 		if($this->Flight_model->airportCodeToId($code) == NULL) {
 			$this->form_validation->set_message('check_airport_code', 'The %s field was not a valid airport code');
 			return FALSE;

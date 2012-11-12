@@ -1,3 +1,5 @@
+<h2>Search/Add/Update/Remove Flights</h2>
+
 <?php echo form_open('admin/searchFlight'); ?>
 Flight ID
 <input type="text" size="20" name="flight_id" id="flight_id" value="<?php if($flight != NULL) echo $flight->flight_pk; else echo set_value('flight_id');?>">
@@ -26,10 +28,10 @@ Flight ID
 <input type="text" size="20" name="arrival_airport_code" id="arrival_airport_code" value="<?php if($flight != NULL) echo $flight->arrival_airport_code; ?>">
 </td>
 <td>
-<center><select name="flight_class" id="flight_class">
+<select name="flight_class" id="flight_class">
 <option value="1" <?php if($flight!= NULL && $flight->class_type == "1") { ?>selected="selected" <?php }?>>Economic</option>
 <option value="2" <?php if($flight!= NULL && $flight->class_type == "2") { ?>selected="selected" <?php }?>>Business</option>
-</select></center>
+</select>
 </td>
 <td>$&nbsp<input type="text" size="8" name="price" id="price" value="<?php if($flight != NULL) echo $flight->ticket_price; ?>"></td>
 </tr>
