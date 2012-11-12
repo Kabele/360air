@@ -52,11 +52,21 @@ class Flights extends CI_Controller
 	
 	public function view($flight_id) {
 		// Get the flight object
-		$flight = $this->Flight_model->getFlight($flight_id);
-		if($flight == NULL)
-			echo 'Flight not found';
-		else
-			$flight->print_data();
+		$data['flight'] = $this->Flight_model->getFlight($flight_id);
+		if($data['flight'] == NULL) {
+			$this->session->set_flashdata('error_message', 'Flight not found');
+			redirect('');
+			return;
+		}
+		
+		//Load template components (all are optional)
+		$page_data['css'] = $this->load->view("flights/view_style.css", NULL, true);
+		$page_data['js'] = $this->load->view("flights/view_js", NULL, true);
+		$page_data['content'] = $this->load->view("flights/view_content", $data, true);
+		$page_data['widgets'] = $this->load->view("flights/view_widgets", NULL, true);
+	
+		//Send page data to the site_main and have it rendered
+		$this->load->view("site_main",$page_data);
 	}
 }
 
