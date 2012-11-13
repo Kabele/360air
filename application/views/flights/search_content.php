@@ -5,7 +5,7 @@
 
 	<?php //var_dump($search_results); ?>
 	
-	<table><thead>
+	<table id="search_results_table" class="tablesorter"><thead>
 	<tr><th>Flight #</th><th>Price</th><th>From</th><th>To</th><th>Departs</th><th>Arrives</th><th>&nbsp;</th></tr>
 	</thead>
 	<tbody>
@@ -27,5 +27,3 @@
 <?php } else { ?>
 	No results found
 <?php } ?>
-
-<?php echo 'DEBUG ' . $dbg; ?>

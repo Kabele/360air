@@ -201,7 +201,7 @@ class Flight_model extends CI_Model {
 		
 		$flights = $this->db->get();
 		
-		return array('flights' => $flights->result(), 'query' => $this->db->last_query());
+		return $flights->result();
 	}
 	
 	/**
