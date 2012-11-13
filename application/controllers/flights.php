@@ -54,8 +54,7 @@ class Flights extends CI_Controller
 					$arriveEnd = NULL;
 
 				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers);
-				$data['search_results'] = $result['flights'];
-				$data['dbg'] = $result['query'];
+				$data['search_results'] = $result;
 		}
 	
 		//Load template components (all are optional)
