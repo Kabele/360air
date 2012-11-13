@@ -72,7 +72,7 @@ if(isset($content)) echo $content;
 <?php if(isset($widgets)) echo $widgets ?>
 </div>
 
-<div id="footer"><p><center>(C) 2012, 360-air.com.</center></p></div>
+<div id="footer"><p><center>Chance Cooper, Keilan Jackson & Ramsey Kant.  (C) 2012, 360-air.com.</center></p></div>
 
 </div> <!-- end container -->
 </body>
