@@ -2,7 +2,6 @@
 	<ul>
 		<li><a href="#order-tab">Tickets</a></li>
 		<li><a href="#account-tab">Account</a></li>
-		<li><a href="#tabs-3">Other</a></li>
 	</ul>
 	<div id="order-tab">
 		<span style="font-weight: bold">History</span><br /><br />
@@ -48,5 +47,4 @@
 			<?=form_close()?>
 		</div>
 	</div>
-	<div id="tabs-3">Other stuff?</div>
 </div>
