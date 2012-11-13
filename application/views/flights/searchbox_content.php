@@ -34,8 +34,8 @@
 -->
 <td>
 <center><select name="is_domestic" id="is_domestic">
-<option value="1" <?php echo set_select('flight_class',1);?>>Domestic</option>
-<option value="0" <?php echo set_select('flight_class',0);?>>International</option>
+<option value="1" <?php echo set_select('is_domestic',1);?>>Domestic</option>
+<option value="0" <?php echo set_select('is_domestic',0);?>>International</option>
 </select></center>
 </td>
 

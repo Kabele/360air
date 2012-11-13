@@ -29,11 +29,11 @@ Flight ID
 </td>
 <td>
 <select name="flight_class" id="flight_class">
-<option value="1" <?php if($flight!= NULL && $flight->class_type == "1") { ?>selected="selected" <?php }?>>Economic</option>
-<option value="2" <?php if($flight!= NULL && $flight->class_type == "2") { ?>selected="selected" <?php }?>>Business</option>
+<option value="<?php echo FLIGHT_TYPE_COACH; ?>" <?php if($flight!= NULL && $flight->class_type == FLIGHT_TYPE_COACH) { ?>selected="selected" <?php }?>>Economic</option>
+<option value="<?php echo FLIGHT_TYPE_BUSINESS; ?>" <?php if($flight!= NULL && $flight->class_type == FLIGHT_TYPE_BUSINESS) { ?>selected="selected" <?php }?>>Business</option>
 </select>
 </td>
-<td>$&nbsp<input type="text" size="8" name="price" id="price" value="<?php if($flight != NULL) echo $flight->ticket_price; ?>"></td>
+<td>$&nbsp<input type="text" size="8" name="price" id="price" value="<?php if($flight != NULL) echo $flight->ticket_price; ?>" /></td>
 </tr>
 
 <tr>
@@ -66,9 +66,9 @@ Flight ID
 </table>
 
 <div id="radioset">
-<input type="radio" name="operation" id="add_flight" value="add_flight">Add flight
-<input type="radio" name="operation" id="update_flight" value="update_flight">Update flight
-<input type="radio" name="operation" id="delete_flight" value="delete_flight">Delete flight
+<input type="radio" name="operation" id="add_flight" value="add_flight">Add flight</input>
+<input type="radio" name="operation" id="update_flight" value="update_flight">Update flight</input>
+<input type="radio" name="operation" id="delete_flight" value="delete_flight">Delete flight</input>
 </div>
 
 <div id="comment">

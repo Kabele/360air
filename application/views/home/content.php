@@ -8,7 +8,7 @@
 	<th>From</th>
 	<th>To</th>
 	<th>Price</th>
-	<th></th>
+	<th>View</th>
 </tr>
 </thead>
 

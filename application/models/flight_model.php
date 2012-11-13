@@ -154,7 +154,7 @@ class Flight_model extends CI_Model {
 	 * @param 
 	 * @return a list of flight data matching the search criteria
 	 */
-	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $availableSeats) {
+	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $availableSeats, $isDomestic) {
 		$this->db->from('flights');
 		
 		// Add filter parameters depending on what was passed
@@ -196,6 +196,12 @@ class Flight_model extends CI_Model {
 		
 		$this->db->join('airports as arrival_airport', 'flights.arrival_airport_id = arrival_airport.airport_pk');
 		$this->db->select('arrival_airport.code as arrival_airport_code, arrival_airport.name as arrival_airport_name, arrival_airport.city as arrival_airport_city, arrival_airport.country as arrival_airport_country');
+		
+
+		if($isDomestic) {
+			$this->db->where('depart_airport.is_domestic', '1');
+			$this->db->where('arrival_airport.is_domestic', '1');
+		}
 		
 		$this->db->select('flights.*');
 		

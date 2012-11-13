@@ -6,6 +6,7 @@
 	<span>Departure Time:</span> <?=mdate('%D, %j %M %Y @ %H:%i', $flight->depart_time)?><br />
 	<span>Arrival Time:</span> <?=mdate('%D, %j %M %Y @ %H:%i', $flight->arrival_time)?><br />
 	<span>Price per Seat:</span> $<?=$flight->ticket_price?><br />
+	<span>Class:</span> <?php if($flight->class_type == FLIGHT_TYPE_COACH) echo "Economic"; else echo "Business";?><br />
 	<span>Total Seats:</span> <?=$flight->total_seats?><br />
 	<span>Available Seats:</span> <?=$flight->available_seats?><br />
 </div>

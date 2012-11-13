@@ -53,7 +53,7 @@ class Flights extends CI_Controller
 				else
 					$arriveEnd = NULL;
 
-				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers);
+				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers, $isDomestic);
 				$data['search_results'] = $result;
 		}
 	
