@@ -22,15 +22,21 @@
 <?php if(!isset($customer_orders)) { ?>
 <p>No results</p>
 <?php } else { ?>
-	<table>
+	<table id="order_results_table" class="tablesorter">
 	<thead><tr><td>Order ID</td><td>Time</td><td>Status</td><td>Paid</td><td>Flight ID</td></tr></thead>
 	<tbody>
 	<?php foreach($customer_orders as $order) { ?>
-		<tr><td><?php echo $order->order_pk; ?></td><td><?php echo unix_to_human($order->time);?></td><td><?php echo $order->status; ?></td><td><?php echo $order->amount_paid;?></td><td><?php echo $order->flight_id; ?></td></tr>	
-			
+		<tr>
+		<td><a href="<?=site_url('orders/view/'.$order->order_pk)?>"><?=$order->order_pk?></a></td>
+		<td><?php echo unix_to_human($order->time);?></td>
+		<td><?php echo $order->status; ?></td>
+		<td><?php echo $order->amount_paid;?></td>
+		<td><a href="<?=site_url('flights/view/'.$order->flight_id)?>"><?=$order->flight_id?></a></td></tr>		
 	<? } ?>
 	</tbody>
 	</table>
+	
+	<script language="javascript"> $("#order_results_table").tablesorter();</script>
 <?} ?>
 </div>
 </div>

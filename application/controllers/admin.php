@@ -187,7 +187,7 @@ class Admin extends CI_Controller
 		
 		// Load template components (all are optional)
 		$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
-		$page_data['js'] = $this->load->view('admin/orders_js', NULL, true);
+		$page_data['js'] = $this->load->view('admin/orders_js', $data, true);
 		$page_data['content'] = $this->load->view('admin/orders_content', $data, true);
 		$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
 		
@@ -406,7 +406,7 @@ class Admin extends CI_Controller
 			
 			// Load template components (all are optional)
 			$page_data['css'] = $this->load->view('admin/orders_style.css', NULL, true);
-			$page_data['js'] = $this->load->view('admin/orders_js', NULL, true);
+			$page_data['js'] = $this->load->view('admin/orders_js', $data, true);
 			$page_data['content'] = $this->load->view('admin/orders_content', $data, true);
 			$page_data['widgets'] = $this->load->view('admin/flights_widgets', NULL, true);
 			
@@ -415,33 +415,6 @@ class Admin extends CI_Controller
 			
 		}
 		
-	}
-	
-	public function cancelOrder() {
-		$usrdata = $this->session->all_userdata();
-		if($this->Account_model->accountHasPermissions($usrdata['account_id'], 'ADMIN')) {
-			if($this->input->post('cancel_order')) {
-				// Validation rules
-				$this->form_validation->set_rules('account_id', 'Account Id', 'required');
-				$this->form_validation->set_rules('order_id', 'Order Id', 'required');
-				
-				if($this->form_validation->run() == FALSE) {
-					$this->session->set_flashdata('error_message', validation_errors());
-				} else {
-					$result = $this->Order_model->cancelOrder($this->post('account_id'), $this->post('order_id'));
-					if($result == TRUE) {
-						$this->session->set_flashdata('result', 'Order successfully canceled');
-					} else {
-						$this->session->set_flashdata('result', 'Order could not be canceled');
-					}
-				}
-					
-			}
-		} else {
-			// Redirect with error message
-			$this->session->set_flashdata('error_message', 'You do not have sufficient privelages');
-			redirect('home/index', 'location');
-		}
 	}
 	
 	/*
