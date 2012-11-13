@@ -66,9 +66,9 @@ Flight ID
 </table>
 
 <div id="radioset">
-<input type="radio" name="operation" id="add_flight" value="add_flight">Add flight</input>
-<input type="radio" name="operation" id="update_flight" value="update_flight">Update flight</input>
-<input type="radio" name="operation" id="delete_flight" value="delete_flight">Delete flight</input>
+<input type="radio" name="operation" id="add_flight" value="add_flight">Add flight
+<input type="radio" name="operation" id="update_flight" value="update_flight">Update flight
+<input type="radio" name="operation" id="delete_flight" value="delete_flight">Delete flight
 </div>
 
 <div id="comment">
