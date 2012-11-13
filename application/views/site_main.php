@@ -33,11 +33,10 @@
 	<h1>360-air.com</h1>
 	  
 	<div id="navlinks" align="right">
-		<a href="<?=base_url()?>">Home</a>
-		<a href="<?=base_url('flights')?>">Flights</a>
-		<a href="<?=base_url('news')?>">News</a>
-		<a href="<?=base_url('accounts')?>">Account</a>
-		<a href="<?=base_url('contact')?>">Contact</a>
+		<?=anchor('', 'Home')?>
+		<?=anchor('flights', 'Flights')?>
+		<?=anchor('accounts', 'Accounts')?>
+		<?=mailto('rkant@asu.edu?subject=360-air.com Support', 'Contact')?>
 	</div>
 </div>
 
