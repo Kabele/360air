@@ -154,15 +154,12 @@ class Flight_model extends CI_Model {
 	 * @param 
 	 * @return a list of flight data matching the search criteria
 	 */
-	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $availableSeats, $isDomestic) {
+	function search($departAirport, $arrivalAirport, $departTimeStart, $departTimeEnd, $arriveTimeStart, $arriveTimeEnd, $classType, $isDomestic) {
 		$this->db->from('flights');
 		
 		// Add filter parameters depending on what was passed
 		if($classType != NULL) {
 			$this->db->where('flights.class_type',$classType);
-		}
-		if($availableSeats != NULL) {
-			$this->db->where('flights.available_seats >=', $availableSeats);
 		}
 		if($departTimeStart != NULL) {
 			$this->db->where('depart_time >', $departTimeStart);

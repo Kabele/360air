@@ -28,9 +28,6 @@ class Flights extends CI_Controller
 				$from = $this->input->post('from');
 				$to = $this->input->post('to');
 				$classType = $this->input->post('flight_class');
-				$passengers = $this->input->post('passenger_adult');
-				$passengers += $this->input->post('passenger_children');
-				$passengers += $this->input->post('passenger_infant');
 				$isDomestic = $this->input->post('is_domestic');
 				
 				if($this->input->post('depart_date_start_picker'))
@@ -53,7 +50,7 @@ class Flights extends CI_Controller
 				else
 					$arriveEnd = NULL;
 
-				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $passengers, $isDomestic);
+				$result = $this->Flight_model->search($from, $to, $departStart, $departEnd, $arriveStart, $arriveEnd, $classType, $isDomestic);
 				$data['search_results'] = $result;
 		}
 	
