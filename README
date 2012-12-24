@@ -4,10 +4,13 @@ Ramsey Kant, Keilan Jackson, Chance Cooper
 https://github.com/RamseyK/360air
 Live Demo: http://360-air.com
 
-A sample Airline ticketing application built with CodeIgniter
+A sample Airline ticketing application built with CodeIgniter 2.1.3
 
 Prerequisites: Apache 2.2+, MySQL 5.5+, PHP 5.4+
 
+Setup:
+Setup MySQL Database with default dump in /sql (default database name is 'air')
+config.php.default and database.php.default must be renamed to .php and configured (see CI user guide)
 
 License:
 See license.txt
