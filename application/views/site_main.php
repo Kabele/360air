@@ -4,7 +4,7 @@
 <title>Air360<?php if(isset($title)) echo ' - ' . $title; ?></title>
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="description" content="Air360 is a test airline web application" /> 
+<meta name="description" content="360air is a test airline web application" /> 
 <?php if(isset($nocache)) echo '<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">';?>
 <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 
@@ -30,13 +30,13 @@
 
 <div id="header">
 	<img src="<?=base_url('images/airplane_silo_inverted.png')?>"></img><br />
-	<h1>360-air.com</h1>
+	<h1>360-air</h1>
 	  
 	<div id="navlinks" align="right">
 		<?=anchor('', 'Home')?>
 		<?=anchor('flights', 'Flights')?>
 		<?=anchor('accounts', 'Accounts')?>
-		<?=mailto('rkant@asu.edu?subject=360-air.com Support', 'Contact')?>
+		<?=mailto('rkant@asu.edu?subject=360-air Support', 'Contact')?>
 	</div>
 </div>
 
