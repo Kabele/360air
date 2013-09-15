@@ -21,7 +21,7 @@
 	<td>$<?=$flt->ticket_price?></td>
 	<td><a href="<?=base_url('flights/view/'.$flt->flight_pk)?>"><span class="ui-icon ui-icon-arrowthick-1-e"></span></a></td>
 	</tr>
-<? } ?>
+<?php } ?>
 </tbody>
 </table>
 
